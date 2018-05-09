@@ -42,28 +42,33 @@ arr_df_proeficiencia_cidades_qedu <- lapply(df_estados$Nome_UF,
 
 ## Dados prova brasil 2015
 df_alunos_2015 <- 
-  read.csv(paste0(dir_dados,"prova_brasil_2015/2015_fonte_TS_ALUNO_9EF.csv"))
+  read.csv(paste0(dir_dados,"/prova_brasil_2015/2015_fonte_TS_ALUNO_9EF.csv"),
+           stringsAsFactors = FALSE)
 df_diretor_2015 <- 
-  read.csv(paste0(dir_dados,"prova_brasil_2015/2015_fonte_TS_DIRETOR.csv"))
+  read.csv(paste0(dir_dados,"/prova_brasil_2015/2015_fonte_TS_DIRETOR.csv"),
+           stringsAsFactors = FALSE)
 df_escola_2015 <- 
-  read.csv(paste0(dir_dados,"prova_brasil_2015/2015_fonte_TS_ESCOLA.csv"))
+  read.csv(paste0(dir_dados,"/prova_brasil_2015/2015_fonte_TS_ESCOLA.csv"),
+           stringsAsFactors = FALSE)
 df_professor_2015 <- 
-  read.csv(paste0(dir_dados,"prova_brasil_2015/2015_fonte_TS_PROFESSOR.csv"))
+  read.csv(paste0(dir_dados,"/prova_brasil_2015/2015_fonte_TS_PROFESSOR.csv"),
+           stringsAsFactors = FALSE)
 
 ## Data frame temporario, utilizado devido ao desempenho computacional
 df_alunos_2015_partial <- 
-  read.csv(paste0(dir_dados,"prova_brasil_2015/2015_fonte_TS_ALUNO_9EF.csv"),
-           n_max = 100)
+  read.csv(paste0(dir_dados,"/prova_brasil_2015/2015_fonte_TS_ALUNO_9EF.csv"),
+           nrows = 100,
+           stringsAsFactors = FALSE)
 
 #### Preparação nos data frames #####
 # Transformando a lista de data frames com a proeficiencia de cada cidade
 # em um único data frame
-df_proeficiencia_cidades_qedu <- do.call(bind_rows(),
+df_proeficiencia_cidades_qedu <- do.call(rbind,
                                          arr_df_proeficiencia_cidades_qedu)
 # removendo array do ambiente
 rm(arr_df_proeficiencia_cidades_qedu)
 
-##### Renames data frames #####
+#### Renames data frames ####
 # Carregar nomes em um vetor auxiliar
 aux_proeficiencia_estados <- names(df_proeficiencia_estados_qedu)
 aux_proeficiencia_cidades <- names(df_proeficiencia_cidades_qedu)
@@ -91,6 +96,8 @@ aux_names_diretor <- paste0(aux_names_diretor, '_diretor')
 aux_names_escola <- paste0(aux_names_escola, '_escola')
 
 # Aplicando novos nomes das colunas
+names(df_proeficiencia_estados_qedu) <- aux_proeficiencia_estados
+names(df_proeficiencia_cidades_qedu) <- aux_proeficiencia_cidades
 names(df_alunos_2015) <- aux_names_alunos
 names(df_professor_2015) <- aux_names_professor
 names(df_diretor_2015) <- aux_names_diretor
@@ -98,7 +105,7 @@ names(df_escola_2015) <- aux_names_escola
 ## temp
 names(df_alunos_2015_partial) <- aux_names_alunos
 
-##### Montando fullDataSet #####
+#### Montando fullDataSet ####
 fullDataFrame <- df_alunos_2015_partial %>% 
   left_join(df_professor_2015,
             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_professor',
@@ -109,7 +116,28 @@ fullDataFrame <- df_alunos_2015_partial %>%
             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_diretor')) %>% 
   left_join(df_escola_2015, 
             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_escola'))
-  
+
+#### Seleção das variaveis (Redução Vertical) ####
+#### TODO
+
+#### Filtro dos dados (Redução Horizontal) #####
+# Seleção dos estados a serem utilizados
+## Os cinco com melhor taxa de aprendizado
+melhores_estados_5 <- df_proeficiencia_estados_qedu %>% 
+  mutate(PERCENTUAL_APRENDIZADO_ADEQUADO_ = 
+           as.numeric(PERCENTUAL_APRENDIZADO_ADEQUADO_)) %>% 
+  arrange(desc(PERCENTUAL_APRENDIZADO_ADEQUADO_)) %>% 
+  select(ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO_) %>% 
+  head(5)
+## Os quatro com piores taxas de aprendizado
+piores_estados_4 <- df_proeficiencia_estados_qedu %>% 
+  mutate(PERCENTUAL_APRENDIZADO_ADEQUADO_ = 
+           as.numeric(PERCENTUAL_APRENDIZADO_ADEQUADO_)) %>% 
+  arrange(PERCENTUAL_APRENDIZADO_ADEQUADO_) %>% 
+  select(ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO_) %>% 
+  head(5)
+
+# Criando data frames com os dados respectivos ao filtro de estados
   
   
   
