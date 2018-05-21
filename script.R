@@ -1,11 +1,13 @@
 ##### Pacotes necessários #####
 library(dplyr)
 library(readr)
+library(ggplot2)
 
 #### Diretorios #####
 dir_root <- getwd() 
 
 dir_dados <- paste0(dir_root,"/DATA")
+dir_plot <-  paste0(dir_root,"/PLOT")
 dir_proeficiencia_estados <- paste0(dir_dados,"/proficiencia/estados")
 dir_proeficiencia_cidades <- paste0(dir_dados,"/proficiencia/cidades")
 dir_prova_brasil <- paste0(dir_dados,"/prova_brasil_2015")
@@ -46,17 +48,12 @@ arr_df_proeficiencia_cidades_qedu <- lapply(df_estados$Nome_UF,
 ## Dados prova brasil 2015
 df_alunos_2015 <- 
   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ALUNO_9EF.csv"))
-df_diretor_2015 <- 
-  read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_DIRETOR.csv"))
-df_escola_2015 <- 
-  read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ESCOLA.csv"))
-df_professor_2015 <- 
-  read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_PROFESSOR.csv"))
-
-## Data frame temporario, utilizado devido ao desempenho computacional
-df_alunos_2015_partial <- 
-  read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ALUNO_9EF.csv"),
-            n_max = 100)
+# df_diretor_2015 <- 
+#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_DIRETOR.csv"))
+# df_escola_2015 <- 
+#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ESCOLA.csv"))
+# df_professor_2015 <- 
+#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_PROFESSOR.csv"))
 
 #### Preparação nos data frames #####
 # Transformando a lista de data frames com a proeficiencia de cada cidade
@@ -85,9 +82,9 @@ df_proeficiencia_cidades_qedu <-
 aux_proeficiencia_estados <- names(df_proeficiencia_estados_qedu)
 aux_proeficiencia_cidades <- names(df_proeficiencia_cidades_qedu)
 aux_names_alunos <- names(df_alunos_2015)
-aux_names_professor <- names(df_professor_2015)
-aux_names_diretor <- names(df_diretor_2015)
-aux_names_escola <- names(df_escola_2015)
+# aux_names_professor <- names(df_professor_2015)
+# aux_names_diretor <- names(df_diretor_2015)
+# aux_names_escola <- names(df_escola_2015)
 
 # Capitalizando todos os nomes
 aux_proeficiencia_estados <- toupper(aux_proeficiencia_estados)
@@ -103,68 +100,85 @@ aux_proeficiencia_cidades <- chartr("ÉÇÃÁ. ","ECAA__",aux_proeficiencia_cida
 
 # Adicionar respectivo suffixo
 aux_names_alunos <- paste0(aux_names_alunos, '_alunos')
-aux_names_professor <- paste0(aux_names_professor, '_professor')
-aux_names_diretor <- paste0(aux_names_diretor, '_diretor')
-aux_names_escola <- paste0(aux_names_escola, '_escola')
+# aux_names_professor <- paste0(aux_names_professor, '_professor')
+# aux_names_diretor <- paste0(aux_names_diretor, '_diretor')
+# aux_names_escola <- paste0(aux_names_escola, '_escola')
 
 # Aplicando novos nomes das colunas
 names(df_proeficiencia_estados_qedu) <- aux_proeficiencia_estados
 names(df_proeficiencia_cidades_qedu) <- aux_proeficiencia_cidades
 names(df_alunos_2015) <- aux_names_alunos
-names(df_professor_2015) <- aux_names_professor
-names(df_diretor_2015) <- aux_names_diretor
-names(df_escola_2015) <- aux_names_escola
-## temp
-names(df_alunos_2015_partial) <- aux_names_alunos
+# names(df_professor_2015) <- aux_names_professor
+# names(df_diretor_2015) <- aux_names_diretor
+# names(df_escola_2015) <- aux_names_escola
 
-# #### Montando fullDataSet ####
-# fullDataFrame <- df_alunos_2015_partial %>% 
-#   left_join(df_professor_2015,
-#             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_professor',
-#                    'ID_TURMA_alunos' = 'ID_TURMA_professor',
-#                    'ID_SERIE_alunos' = 'ID_SERIE_professor')) %>% 
-#   # existem escolas sem diretor
-#   left_join(df_diretor_2015,
-#             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_diretor')) %>% 
-#   left_join(df_escola_2015, 
-#             by = c('ID_ESCOLA_alunos' = 'ID_ESCOLA_escola'))
-
-#### Limpeza dos dados ####
-# Seleção apenas dos alunos que preencheram a prova
-df_alunos_2015_prova_preenchida <- df_alunos_2015 %>% 
-  filter(IN_PREENCHIMENTO_PROVA_alunos == 1)
-
-#### TODO:  finalização da limpeza dos dados  ####
-
-#### TODO: Ao final da limpeza de dados, atribuir por último a esse data frame
-df_alunos_2015_clean <- df_alunos_2015_prova_preenchida
-
-#### Filtro dos dados para os estados e cidades determinados #####
-# Seleção dos estados a serem utilizados
-## Os cinco com melhor taxa de aprendizado
-melhores_estados <- df_proeficiencia_estados_qedu %>% 
-  mutate(PERCENTUAL_APRENDIZADO_ADEQUADO = 
-           as.numeric(PERCENTUAL_APRENDIZADO_ADEQUADO)) %>% 
-  arrange(desc(PERCENTUAL_APRENDIZADO_ADEQUADO)) %>% 
-  select(COD_UF, ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
-  head(5)
-## Os cinco com piores taxas de aprendizado
-piores_estados <- df_proeficiencia_estados_qedu %>% 
-  mutate(PERCENTUAL_APRENDIZADO_ADEQUADO = 
-           as.numeric(PERCENTUAL_APRENDIZADO_ADEQUADO)) %>% 
-  arrange(PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
-  select(COD_UF, ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
-  head(5)
-
-### As dez melhores cidades dos 5 melhores estados
-melhores_cidades <- df_proeficiencia_cidades_qedu %>% 
-  filter(ESTADO %in% melhores_estados$ESTADO) %>% 
+#### Limpeza dos dados: dados Proficiência ####
+df_proeficiencia_estados_qedu_clean <-
+  df_proeficiencia_estados_qedu %>% 
   mutate_at(vars(PERCENTUAL_APRENDIZADO_ADEQUADO,
                  PERCENTUAL_INSUFICIENTE,
                  PERCENTUAL_BASICO,
                  PERCENTUAL_PROFICIENTE,
                  PERCENTUAL_AVANCADO),
-            as.numeric) %>%
+            as.numeric)
+  
+
+df_proeficiencia_cidades_qedu_clean <-
+  df_proeficiencia_cidades_qedu %>% 
+  mutate_at(vars(PERCENTUAL_APRENDIZADO_ADEQUADO,
+                 PERCENTUAL_INSUFICIENTE,
+                 PERCENTUAL_BASICO,
+                 PERCENTUAL_PROFICIENTE,
+                 PERCENTUAL_AVANCADO),
+            as.numeric) 
+
+#### Limpeza dos dados: dados Prova Brasil ####
+# Seleção apenas dos alunos que preencheram a prova
+df_alunos_2015_clean <- df_alunos_2015 %>% 
+  filter(IN_PREENCHIMENTO_PROVA_alunos == 1,
+         IN_PREENCHIMENTO_QUESTIONARIO_alunos == 1,
+         IN_PROFICIENCIA_alunos == 1,
+         IN_PROVA_BRASIL_alunos == 1)
+
+
+#### Filtro dos dados para os estados e cidades determinados #####
+# Gráfico de proficiência dos estados
+idx <- order(
+  df_proeficiencia_estados_qedu_clean$PERCENTUAL_APRENDIZADO_ADEQUADO, 
+  decreasing = FALSE)
+levels <- df_proeficiencia_estados_qedu_clean$ESTADO[idx]
+df_proeficiencia_estados_qedu_clean$ESTADO <- 
+  factor(df_proeficiencia_estados_qedu_clean$ESTADO, 
+         levels=levels, 
+         ordered=TRUE)
+
+proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%   
+  ggplot(aes(ESTADO,
+             PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
+  geom_bar(stat = 'identity') + 
+  coord_flip() 
+## Salvando o gráfico
+jpeg(paste0(dir_plot,'/proficiencia_plot_estado.jpeg'), 
+     quality = 100,
+     width = 800)
+proficiencia_plot_estado
+dev.off()
+
+# Seleção dos estados a serem utilizados
+## Os cinco com melhor taxa de aprendizado
+melhores_estados <- df_proeficiencia_estados_qedu %>% 
+  arrange(desc(PERCENTUAL_APRENDIZADO_ADEQUADO)) %>% 
+  select(COD_UF, ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
+  head(5)
+## Os cinco com piores taxas de aprendizado
+piores_estados <- df_proeficiencia_estados_qedu %>% 
+  arrange(PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
+  select(COD_UF, ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
+  head(5)
+
+### As dez melhores cidades dos 5 melhores estados
+melhores_cidades <- df_proeficiencia_cidades_qedu_clean %>% 
+  filter(ESTADO %in% melhores_estados$ESTADO) %>% 
   arrange(desc(PERCENTUAL_APRENDIZADO_ADEQUADO),
           desc(PERCENTUAL_AVANCADO),
           desc(PERCENTUAL_PROFICIENTE),
@@ -173,19 +187,17 @@ melhores_cidades <- df_proeficiencia_cidades_qedu %>%
   select(COD_MUNICIPIO_COMPLETO,
          CIDADE,
          ESTADO,
-         PERCENTUAL_APRENDIZADO_ADEQUADO) %>% 
+         PERCENTUAL_APRENDIZADO_ADEQUADO,
+         PERCENTUAL_INSUFICIENTE,
+         PERCENTUAL_BASICO,
+         PERCENTUAL_PROFICIENTE,
+         PERCENTUAL_AVANCADO) %>% 
   head(10)
 
 ### As dez piores cidades dos 5 piores estados
 # Foi utilizado mais de um critério no arrange para desempate.
-piores_cidades <- df_proeficiencia_cidades_qedu %>%
+piores_cidades <- df_proeficiencia_cidades_qedu_clean %>%
   filter(ESTADO %in% piores_estados$ESTADO) %>%
-  mutate_at(vars(PERCENTUAL_APRENDIZADO_ADEQUADO,
-                 PERCENTUAL_INSUFICIENTE,
-                 PERCENTUAL_BASICO,
-                 PERCENTUAL_PROFICIENTE,
-                 PERCENTUAL_AVANCADO),
-            as.numeric) %>%
   arrange(PERCENTUAL_APRENDIZADO_ADEQUADO,
           PERCENTUAL_INSUFICIENTE,
           PERCENTUAL_BASICO,
@@ -194,17 +206,21 @@ piores_cidades <- df_proeficiencia_cidades_qedu %>%
   select(COD_MUNICIPIO_COMPLETO,
          CIDADE,
          ESTADO,
-         PERCENTUAL_APRENDIZADO_ADEQUADO) %>%
+         PERCENTUAL_APRENDIZADO_ADEQUADO,
+         PERCENTUAL_INSUFICIENTE,
+         PERCENTUAL_BASICO,
+         PERCENTUAL_PROFICIENTE,
+         PERCENTUAL_AVANCADO) %>%
   head(10)
 
 # Criando data frames com os dados respectivos ao filtro cidades
 df_alunos_2015_melhores_cidades <- 
-  df_alunos_2015_clean %>% 
-  filter(ID_UF_alunos %in% melhores_cidades$COD_MUNICIPIO_COMPLETO)
+  df_alunos_2015_clean %>%
+  filter(ID_MUNICIPIO_alunos %in% melhores_cidades$COD_MUNICIPIO_COMPLETO)
 
 df_alunos_2015_piores_cidades <- 
   df_alunos_2015_clean %>% 
-  filter(ID_UF_alunos %in% piores_cidades$COD_MUNICIPIO_COMPLETO)
+  filter(ID_MUNICIPIO_alunos %in% piores_cidades$COD_MUNICIPIO_COMPLETO)
 
   
   
