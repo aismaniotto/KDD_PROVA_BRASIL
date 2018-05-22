@@ -12,6 +12,9 @@ dir_proeficiencia_estados <- paste0(dir_dados,"/proficiencia/estados")
 dir_proeficiencia_cidades <- paste0(dir_dados,"/proficiencia/cidades")
 dir_prova_brasil <- paste0(dir_dados,"/prova_brasil_2015")
 
+# Cria diretorio para os gráficos, caso não exista
+dir.create(dir_plot, recursive = TRUE)
+
 ##### Carregar data frames #####
 # Todos os dados foram obtidos através da plataforma QEdu 
 ## Outros dados
@@ -143,17 +146,8 @@ df_alunos_2015_clean <- df_alunos_2015 %>%
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
-idx <- order(
-  df_proeficiencia_estados_qedu_clean$PERCENTUAL_APRENDIZADO_ADEQUADO, 
-  decreasing = FALSE)
-levels <- df_proeficiencia_estados_qedu_clean$ESTADO[idx]
-df_proeficiencia_estados_qedu_clean$ESTADO <- 
-  factor(df_proeficiencia_estados_qedu_clean$ESTADO, 
-         levels=levels, 
-         ordered=TRUE)
-
-proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%   
-  ggplot(aes(ESTADO,
+subl <- df_proeficiencia_estados_qedu_clean %>%   
+  ggplot(aes(reorder(ESTADO,PERCENTUAL_APRENDIZADO_ADEQUADO),
              PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
   geom_bar(stat = 'identity') + 
   coord_flip() 
