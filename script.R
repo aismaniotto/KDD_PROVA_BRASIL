@@ -7,6 +7,7 @@ library(ggplot2)
 dir_root <- getwd() 
 
 dir_dados <- paste0(dir_root,"/DATA")
+dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
 dir_plot <-  paste0(dir_root,"/PLOT")
 dir_proeficiencia_estados <- paste0(dir_dados,"/proficiencia/estados")
 dir_proeficiencia_cidades <- paste0(dir_dados,"/proficiencia/cidades")
@@ -14,6 +15,7 @@ dir_prova_brasil <- paste0(dir_dados,"/prova_brasil_2015")
 
 # Cria diretorio para os gráficos, caso não exista
 dir.create(dir_plot, recursive = TRUE)
+dir.create(dir_dados_pre_processados, recursive = TRUE)
 
 ##### Carregar data frames #####
 # Todos os dados foram obtidos através da plataforma QEdu 
@@ -50,13 +52,13 @@ arr_df_proeficiencia_cidades_qedu <- lapply(df_estados$Nome_UF,
 
 ## Dados prova brasil 2015
 df_alunos_2015 <- 
-  read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ALUNO_9EF.csv"))
+  read_csv(paste0(dir_prova_brasil,"/TS_ALUNO_9EF.csv"))
 # df_diretor_2015 <- 
-#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_DIRETOR.csv"))
+#   read_csv(paste0(dir_prova_brasil,"/TS_DIRETOR.csv"))
 # df_escola_2015 <- 
-#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_ESCOLA.csv"))
+#   read_csv(paste0(dir_prova_brasil,"/TS_ESCOLA.csv"))
 # df_professor_2015 <- 
-#   read_csv(paste0(dir_prova_brasil,"/2015_fonte_TS_PROFESSOR.csv"))
+#   read_csv(paste0(dir_prova_brasil,"/TS_PROFESSOR.csv"))
 
 #### Preparação nos data frames #####
 # Transformando a lista de data frames com a proeficiencia de cada cidade
@@ -116,6 +118,7 @@ names(df_alunos_2015) <- aux_names_alunos
 # names(df_escola_2015) <- aux_names_escola
 
 #### Limpeza dos dados: dados Proficiência ####
+# Transformação dos dados para o tipo numeric
 df_proeficiencia_estados_qedu_clean <-
   df_proeficiencia_estados_qedu %>% 
   mutate_at(vars(PERCENTUAL_APRENDIZADO_ADEQUADO,
@@ -125,7 +128,7 @@ df_proeficiencia_estados_qedu_clean <-
                  PERCENTUAL_AVANCADO),
             as.numeric)
   
-
+# Transformação dos dados para o tipo numeric
 df_proeficiencia_cidades_qedu_clean <-
   df_proeficiencia_cidades_qedu %>% 
   mutate_at(vars(PERCENTUAL_APRENDIZADO_ADEQUADO,
@@ -137,12 +140,72 @@ df_proeficiencia_cidades_qedu_clean <-
 
 #### Limpeza dos dados: dados Prova Brasil ####
 # Seleção apenas dos alunos que preencheram a prova
-df_alunos_2015_clean <- df_alunos_2015 %>% 
+df_alunos_2015_filter <- df_alunos_2015 %>% 
   filter(IN_PREENCHIMENTO_PROVA_alunos == 1,
          IN_PREENCHIMENTO_QUESTIONARIO_alunos == 1,
          IN_PROFICIENCIA_alunos == 1,
          IN_PROVA_BRASIL_alunos == 1)
 
+# Seleção das colunas a serem trabalhadas
+df_alunos_2015_select1 <- df_alunos_2015_filter %>% 
+  select(ID_PROVA_BRASIL_alunos:DESVIO_PADRAO_MT_SAEB_alunos,
+         # Até que série sua mãe, ou a mulher responsável por você, estudou?
+         TX_RESP_Q019_alunos,
+         # Até que série seu pai, ou o homem responsável por você, estudou?
+         TX_RESP_Q023_alunos,
+         # Seus pais ou responsáveis incentivam você a estudar?
+         TX_RESP_Q027_alunos,
+         # Seus pais ou responsáveis incentivam você a fazer o dever de casa 
+         # e/ou os trabalhos da escola?
+         TX_RESP_Q028_alunos,
+         # Seus pais ou responsáveis incentivam você a ler?
+         TX_RESP_Q029_alunos,
+         # Seus pais ou responsáveis incentivam você a ir a escola e/ou não 
+         # faltar às aulas?
+         TX_RESP_Q030_alunos,
+         # Em dia de aula, quanto tempo você gasta assistindo à TV, navegando 
+         # na internet ou jogando jogos eletrônicos?
+         TX_RESP_Q043_alunos,
+         # Em dias de aula, quanto tempo você gasta fazendo trabalhos 
+         # domésticos (ex.: lavando louça, limpando o quintal etc.)
+         TX_RESP_Q044_alunos,
+         # Você gosta de estudar Matemática?
+         TX_RESP_Q053_alunos,
+         # Você faz o dever de casa de Matemática?
+         TX_RESP_Q054_alunos,
+         # O(A) professor(a) corrige o dever de casa de Matemática?
+         TX_RESP_Q055_alunos)
+
+# Remoção das colunas que não serão utilizadas
+df_alunos_2015_select2 <- df_alunos_2015_select1 %>% 
+  select(-ID_PROVA_BRASIL_alunos,
+         -ID_REGIAO_alunos,
+         -ID_AREA_alunos,
+         -ID_ESCOLA_alunos,
+         -ID_DEPENDENCIA_ADM_alunos,
+         -ID_LOCALIZACAO_alunos,
+         -ID_TURMA_alunos
+         -ID_TURNO_alunos,
+         -ID_SERIE_alunos,
+         # -ID_ALUNO_alunos,
+         -IN_SITUACAO_CENSO_alunos,
+         -ID_CADERNO_alunos,
+         -ID_BLOCO_1_alunos,
+         -ID_BLOCO_2_alunos,
+         -TX_RESP_BLOCO_1_LP_alunos,
+         -TX_RESP_BLOCO_1_MT_alunos,
+         -TX_RESP_BLOCO_2_LP_alunos,
+         -TX_RESP_BLOCO_2_MT_alunos,
+         -ESTRATO_ANEB_alunos,
+         -PESO_ALUNO_LP_alunos,
+         -PESO_ALUNO_MT_alunos,
+         -PROFICIENCIA_LP_alunos,
+         -DESVIO_PADRAO_LP_alunos,
+         -PROFICIENCIA_LP_SAEB_alunos,
+         -DESVIO_PADRAO_LP_SAEB_alunos)
+
+# Finalizado a limpeza
+df_alunos_2015_clean <- df_alunos_2015_select2
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
@@ -216,5 +279,11 @@ df_alunos_2015_piores_cidades <-
   df_alunos_2015_clean %>% 
   filter(ID_MUNICIPIO_alunos %in% piores_cidades$COD_MUNICIPIO_COMPLETO)
 
-  
-  
+# Exportando dados pré-processados
+write.table(df_alunos_2015_melhores_cidades,
+            paste0(dir_dados_pre_processados,
+                   "/df_alunos_2015_melhores_cidades.csv"))
+write.table(df_alunos_2015_piores_cidades,
+            paste0(dir_dados_pre_processados,
+                   "/df_alunos_2015_piores_cidades.csv"))
+
