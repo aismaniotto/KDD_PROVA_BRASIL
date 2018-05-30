@@ -144,15 +144,26 @@ df_alunos_2015_filter <- df_alunos_2015 %>%
   filter(IN_PREENCHIMENTO_PROVA_alunos == 1,
          IN_PREENCHIMENTO_QUESTIONARIO_alunos == 1,
          IN_PROFICIENCIA_alunos == 1,
-         IN_PROVA_BRASIL_alunos == 1)
+         IN_PROVA_BRASIL_alunos == 1) %>% 
+  select(-IN_PREENCHIMENTO_PROVA_alunos,
+         -IN_PREENCHIMENTO_QUESTIONARIO_alunos,
+         -IN_PROFICIENCIA_alunos,
+         -IN_PROVA_BRASIL_alunos)
 
-# Seleção das colunas a serem trabalhadas
+# Seleção das questões do questionário conceitual que serão trabalhadas
 df_alunos_2015_select1 <- df_alunos_2015_filter %>% 
   select(ID_PROVA_BRASIL_alunos:DESVIO_PADRAO_MT_SAEB_alunos,
+         # Na sua casa tem computador?
+         TX_RESP_Q013_alunos,
+         # Na sua casa tem quartos para dormir?
+         TX_RESP_Q015_alunos,
          # Até que série sua mãe, ou a mulher responsável por você, estudou?
          TX_RESP_Q019_alunos,
          # Até que série seu pai, ou o homem responsável por você, estudou?
          TX_RESP_Q023_alunos,
+         # Com qual frequência seus pais, ou responsáveis por você, vão à 
+         # reunião de pais?
+         TX_RESP_Q026_alunos,
          # Seus pais ou responsáveis incentivam você a estudar?
          TX_RESP_Q027_alunos,
          # Seus pais ou responsáveis incentivam você a fazer o dever de casa 
@@ -169,12 +180,18 @@ df_alunos_2015_select1 <- df_alunos_2015_filter %>%
          # Em dias de aula, quanto tempo você gasta fazendo trabalhos 
          # domésticos (ex.: lavando louça, limpando o quintal etc.)
          TX_RESP_Q044_alunos,
+         # Atualmente você trabalha fora de casa (recebendo ou não salário)?
+         TX_RESP_Q045_alunos,
+         # Você já foi reprovado?
+         TX_RESP_Q048_alunos,
          # Você gosta de estudar Matemática?
          TX_RESP_Q053_alunos,
          # Você faz o dever de casa de Matemática?
          TX_RESP_Q054_alunos,
          # O(A) professor(a) corrige o dever de casa de Matemática?
-         TX_RESP_Q055_alunos)
+         TX_RESP_Q055_alunos,
+         # Quando você terminar o 9o ano(8a série), o que você pretende fazer?
+         TX_RESP_Q057_alunos)
 
 # Remoção das colunas que não serão utilizadas
 df_alunos_2015_select2 <- df_alunos_2015_select1 %>% 
@@ -202,14 +219,17 @@ df_alunos_2015_select2 <- df_alunos_2015_select1 %>%
          -PROFICIENCIA_LP_alunos,
          -DESVIO_PADRAO_LP_alunos,
          -PROFICIENCIA_LP_SAEB_alunos,
-         -DESVIO_PADRAO_LP_SAEB_alunos)
+         -DESVIO_PADRAO_LP_SAEB_alunos,
+         -PROFICIENCIA_MT_alunos,
+         -DESVIO_PADRAO_MT_alunos,
+         -DESVIO_PADRAO_MT_SAEB_alunos)
 
 # Finalizado a limpeza
 df_alunos_2015_clean <- df_alunos_2015_select2
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
-subl <- df_proeficiencia_estados_qedu_clean %>%   
+proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%   
   ggplot(aes(reorder(ESTADO,PERCENTUAL_APRENDIZADO_ADEQUADO),
              PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
   geom_bar(stat = 'identity') + 
@@ -279,11 +299,66 @@ df_alunos_2015_piores_cidades <-
   df_alunos_2015_clean %>% 
   filter(ID_MUNICIPIO_alunos %in% piores_cidades$COD_MUNICIPIO_COMPLETO)
 
+#### Transformação de dados ####
+# Criação das colunas indicando o nível de proficiência do estudante
+## Nível proficiente 
+### Insuficiente, Básico, Proficiente ou Avançado
+#### Insuficiente: 0 a 224 pontos
+#### Básico: 225 a 299 pontos
+#### Proficiente: 300 a 349 pontos
+#### Avançado: Igual ou maior que 350
+## Aprendizado adequado 
+### Sim = Nível proficiente ou avançado; Não = Nível básico ou insuficiente
+df_alunos_2015_melhores_cidades <- 
+  df_alunos_2015_melhores_cidades %>% 
+  mutate(nivel_proficiencia = 
+           case_when(
+             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
+             PROFICIENCIA_MT_SAEB_alunos >= 225 &
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Básico",
+             PROFICIENCIA_MT_SAEB_alunos >= 300 &
+               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avançado"
+           ),
+         ind_aprendizado_adequado = 
+           case_when(
+             nivel_proficiencia == "Insuficiente" | 
+               nivel_proficiencia == "Básico" ~ "Não",
+             nivel_proficiencia == "Proficiente" | 
+               nivel_proficiencia == "Avançado" ~ "Sim"
+           )
+         )
+
+df_alunos_2015_piores_cidades <- 
+  df_alunos_2015_piores_cidades %>% 
+  mutate(nivel_proficiencia = 
+           case_when(
+             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
+             PROFICIENCIA_MT_SAEB_alunos >= 225 &
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Básico",
+             PROFICIENCIA_MT_SAEB_alunos >= 300 &
+               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avançado"
+           ),
+         ind_aprendizado_adequado = 
+           case_when(
+             nivel_proficiencia == "Insuficiente" | 
+               nivel_proficiencia == "Básico" ~ "Não",
+             nivel_proficiencia == "Proficiente" | 
+               nivel_proficiencia == "Avançado" ~ "Sim"
+           )
+  )
+
 # Exportando dados pré-processados
-write.table(df_alunos_2015_melhores_cidades,
-            paste0(dir_dados_pre_processados,
-                   "/df_alunos_2015_melhores_cidades.csv"))
-write.table(df_alunos_2015_piores_cidades,
-            paste0(dir_dados_pre_processados,
-                   "/df_alunos_2015_piores_cidades.csv"))
+write.table(x = df_alunos_2015_melhores_cidades,
+            file = paste0(dir_dados_pre_processados,
+                   "/df_alunos_2015_melhores_cidades.csv"),
+            row.names = FALSE,
+            sep = ";")
+write.table(x = df_alunos_2015_piores_cidades,
+            file = paste0(dir_dados_pre_processados,
+                   "/df_alunos_2015_piores_cidades.csv"),
+            row.names = FALSE,
+            sep = ";")
+
 
