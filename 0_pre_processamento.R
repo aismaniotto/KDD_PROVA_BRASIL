@@ -4,14 +4,14 @@ library(readr)
 library(ggplot2)
 
 #### Diretorios #####
-dir_root <- getwd() 
+dir_root <- getwd()
 
-dir_dados <- paste0(dir_root,"/DATA")
-dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
-dir_plot <-  paste0(dir_root,"/PLOT")
-dir_proeficiencia_estados <- paste0(dir_dados,"/proficiencia/estados")
-dir_proeficiencia_cidades <- paste0(dir_dados,"/proficiencia/cidades")
-dir_prova_brasil <- paste0(dir_dados,"/prova_brasil_2015")
+dir_dados <- paste0(dir_root, "/DATA")
+dir_dados_pre_processados <- paste0(dir_dados, "/pre_processados")
+dir_plot <-  paste0(dir_root, "/PLOT")
+dir_proeficiencia_estados <- paste0(dir_dados, "/proficiencia/estados")
+dir_proeficiencia_cidades <- paste0(dir_dados, "/proficiencia/cidades")
+dir_prova_brasil <- paste0(dir_dados, "/prova_brasil_2015")
 
 # Cria diretorio para os gráficos, caso não exista
 dir.create(dir_plot, recursive = TRUE)
@@ -20,9 +20,9 @@ dir.create(dir_dados_pre_processados, recursive = TRUE)
 ##### Carregar data frames #####
 # Todos os dados foram obtidos através da plataforma QEdu 
 ## Outros dados
-df_municipios <- read_csv(paste0(dir_dados,"/municipios.csv"))
+df_municipios <- read_csv(paste0(dir_dados, "/municipios.csv"))
 ### Ajuste na coluna de nome do municipio, padronizando em caixa alta
-df_municipios <- df_municipios %>% 
+df_municipios <- df_municipios %>%
   mutate(Nome_Municipio = toupper(Nome_Municipio))
 #### Criação do data frame de estados
 df_estados <- df_municipios %>% 
@@ -52,7 +52,7 @@ arr_df_proeficiencia_cidades_qedu <- lapply(df_estados$Nome_UF,
 
 ## Dados prova brasil 2015
 df_alunos_2015 <- 
-  read_csv(paste0(dir_prova_brasil,"/TS_ALUNO_9EF.csv"))
+  read_csv(paste0(dir_prova_brasil, "/TS_ALUNO_9EF.csv"))
 # df_diretor_2015 <- 
 #   read_csv(paste0(dir_prova_brasil,"/TS_DIRETOR.csv"))
 # df_escola_2015 <- 
@@ -77,8 +77,8 @@ df_proeficiencia_estados_qedu <-
 df_proeficiencia_cidades_qedu <- 
   df_proeficiencia_cidades_qedu %>% 
   mutate(Cidade = toupper(Cidade)) %>% 
-  left_join(df_municipios, by = c('Cidade' = 'Nome_Municipio',
-                                  'Estado' = 'Nome_UF')) %>% 
+  left_join(df_municipios, by = c("Cidade" = "Nome_Municipio",
+                                  "Estado" = "Nome_UF")) %>% 
   rename(cod_cidade = Municipio)
 
 
@@ -96,18 +96,22 @@ aux_proeficiencia_estados <- toupper(aux_proeficiencia_estados)
 aux_proeficiencia_cidades <- toupper(aux_proeficiencia_cidades)
 
 # Remoção de simbolos
-aux_proeficiencia_estados <- gsub(" \\(.+\\)","",aux_proeficiencia_estados)
-aux_proeficiencia_cidades <- gsub(" \\(.+\\)","",aux_proeficiencia_cidades)
+aux_proeficiencia_estados <- gsub(" \\(.+\\)", "", aux_proeficiencia_estados)
+aux_proeficiencia_cidades <- gsub(" \\(.+\\)", "", aux_proeficiencia_cidades)
 
 # Remoção de acentos, sinais e espaços
-aux_proeficiencia_estados <- chartr("ÉÇÃÁ. ","ECAA__",aux_proeficiencia_estados)
-aux_proeficiencia_cidades <- chartr("ÉÇÃÁ. ","ECAA__",aux_proeficiencia_cidades)
+aux_proeficiencia_estados <- chartr("ÉÇÃÁ. ", 
+                                    "ECAA__", 
+                                    aux_proeficiencia_estados)
+aux_proeficiencia_cidades <- chartr("ÉÇÃÁ. ", 
+                                    "ECAA__", 
+                                    aux_proeficiencia_cidades)
 
 # Adicionar respectivo suffixo
-aux_names_alunos <- paste0(aux_names_alunos, '_alunos')
-# aux_names_professor <- paste0(aux_names_professor, '_professor')
-# aux_names_diretor <- paste0(aux_names_diretor, '_diretor')
-# aux_names_escola <- paste0(aux_names_escola, '_escola')
+aux_names_alunos <- paste0(aux_names_alunos, "_alunos")
+# aux_names_professor <- paste0(aux_names_professor, "_professor")
+# aux_names_diretor <- paste0(aux_names_diretor, "_diretor")
+# aux_names_escola <- paste0(aux_names_escola, "_escola")
 
 # Aplicando novos nomes das colunas
 names(df_proeficiencia_estados_qedu) <- aux_proeficiencia_estados
@@ -201,7 +205,7 @@ df_alunos_2015_select2 <- df_alunos_2015_select1 %>%
          -ID_ESCOLA_alunos,
          -ID_DEPENDENCIA_ADM_alunos,
          -ID_LOCALIZACAO_alunos,
-         -ID_TURMA_alunos
+         -ID_TURMA_alunos,
          -ID_TURNO_alunos,
          -ID_SERIE_alunos,
          # -ID_ALUNO_alunos,
@@ -230,12 +234,12 @@ df_alunos_2015_clean <- df_alunos_2015_select2
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
 proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%   
-  ggplot(aes(reorder(ESTADO,PERCENTUAL_APRENDIZADO_ADEQUADO),
+  ggplot(aes(reorder(ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO),
              PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
-  geom_bar(stat = 'identity') + 
-  coord_flip() 
+  geom_bar(stat = "identity") + 
+  coord_flip()
 ## Salvando o gráfico
-jpeg(paste0(dir_plot,'/proficiencia_plot_estado.jpeg'), 
+jpeg(paste0(dir_plot, "/proficiencia_plot_estado.jpeg"), 
      quality = 100,
      width = 800)
 proficiencia_plot_estado
@@ -260,7 +264,7 @@ melhores_cidades <- df_proeficiencia_cidades_qedu_clean %>%
           desc(PERCENTUAL_AVANCADO),
           desc(PERCENTUAL_PROFICIENTE),
           desc(PERCENTUAL_BASICO),
-          desc(PERCENTUAL_INSUFICIENTE))%>% 
+          desc(PERCENTUAL_INSUFICIENTE)) %>% 
   select(COD_MUNICIPIO_COMPLETO,
          CIDADE,
          ESTADO,
@@ -360,5 +364,3 @@ write.table(x = df_alunos_2015_piores_cidades,
                    "/df_alunos_2015_piores_cidades.csv"),
             row.names = FALSE,
             sep = ";")
-
-
