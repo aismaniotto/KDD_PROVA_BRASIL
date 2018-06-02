@@ -185,7 +185,7 @@ df_alunos_2015_select1 <- df_alunos_2015_filter %>%
          # domésticos (ex.: lavando louça, limpando o quintal etc.)
          TX_RESP_Q044_alunos,
          # Atualmente você trabalha fora de casa (recebendo ou não salário)?
-         TX_RESP_Q045_alunos,
+         # TX_RESP_Q045_alunos,
          # Você já foi reprovado?
          TX_RESP_Q048_alunos,
          # Você gosta de estudar Matemática?
@@ -228,8 +228,10 @@ df_alunos_2015_select2 <- df_alunos_2015_select1 %>%
          -DESVIO_PADRAO_MT_alunos,
          -DESVIO_PADRAO_MT_SAEB_alunos)
 
-# Finalizado a limpeza
-df_alunos_2015_clean <- df_alunos_2015_select2
+## Preenchimento das respostas não preenchidas (NA) por "NA"
+df_alunos_2015_clean <- df_alunos_2015_select2 %>% 
+  mutate_at(vars(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos),
+            funs(if_else(is.na(.),"Não Informado",.)))
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
