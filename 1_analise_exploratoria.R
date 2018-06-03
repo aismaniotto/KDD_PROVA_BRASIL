@@ -79,6 +79,41 @@ jpeg(paste0(dir_plot, "/proficiencia_plot_piores_cidades.jpeg"),
 proficiencia_plot_piores_cidades
 dev.off()
 
+# Associação (não supervisionado) ==============================================
+## Regras de associação
+### Apriori
+#### Melhores cidades ----------------------------------------------------------
+df_melhores_questionario_nivel_prof <- 
+  df_alunos_2015_melhores_cidades %>% 
+  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
+
+rules_melhores <- apriori(df_melhores_questionario_nivel_prof, 
+                          parameter = list(minlen=2,
+                                           supp = 0.6,
+                                           conf = 0.8,
+                                           target = "rules")
+)  
+df_rules_melhores <- as(rules_melhores, "data.frame")
+df_rules_melhores2 <- 
+  df_rules_melhores %>% 
+  separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
+
+#### Piores cidades ------------------------------------------------------------
+df_piores_questionario_nivel_prof <- 
+  df_alunos_2015_piores_cidades %>% 
+  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) 
+
+rules_piores <- apriori(df_piores_questionario_nivel_prof,
+                        parameter = list(minlen=2,
+                                         supp = 0.5,
+                                         conf = 0.8,
+                                         target = "rules")
+)   
+df_rules_piores <- as(rules_piores, "data.frame")
+df_rules_piores2 <- 
+  df_rules_piores %>% 
+  separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
+
 # Classificação (supervisionado) ===============================================
 ## Árvores de decisão
 # nivel_proficiencia ou ind_aprendizado_adequado
@@ -107,42 +142,6 @@ jpeg(paste0(dir_plot, "/piores_cidades_plot_ctree.jpeg"),
      width = 1000)
 plot(piores_cidades_ctree)
 dev.off()
-
-# Associação (não supervisionado) ==============================================
-## Regras de associação
-### Apriori
-#### Melhores cidades ----------------------------------------------------------
-df_melhores_questionario_nivel_prof <- 
-  df_alunos_2015_melhores_cidades %>% 
-  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
-
-rules_melhores <- apriori(df_melhores_questionario_nivel_prof, 
-                          parameter = list(minlen=2,
-                                           supp = 0.6,
-                                           conf = 0.8,
-                                           target = "rules")
-                          )  
-df_rules_melhores <- as(rules_melhores, "data.frame")
-df_rules_melhores2 <- 
-  df_rules_melhores %>% 
-  separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
-
-#### Piores cidades ------------------------------------------------------------
-df_piores_questionario_nivel_prof <- 
-  df_alunos_2015_piores_cidades %>% 
-  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) 
-  
-rules_piores <- apriori(df_piores_questionario_nivel_prof,
-                        parameter = list(minlen=2,
-                                         supp = 0.5,
-                                         conf = 0.8,
-                                         target = "rules")
-                        )   
-df_rules_piores <- as(rules_piores, "data.frame")
-df_rules_piores2 <- 
-  df_rules_piores %>% 
-  separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
-
 
 # Clusterização (não supervisionado)============================================
 ## K-Means
@@ -234,3 +233,4 @@ table_piores_cidades_cluster_3 <-
   table(
     piores_cidades_cluster_3$cluster, 
     df_alunos_2015_piores_cidades$nivel_proficiencia)
+

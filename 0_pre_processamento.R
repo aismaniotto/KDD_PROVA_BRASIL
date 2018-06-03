@@ -185,7 +185,7 @@ df_alunos_2015_select1 <- df_alunos_2015_filter %>%
          # domésticos (ex.: lavando louça, limpando o quintal etc.)
          TX_RESP_Q044_alunos,
          # Atualmente você trabalha fora de casa (recebendo ou não salário)?
-         # TX_RESP_Q045_alunos,
+         TX_RESP_Q045_alunos,
          # Você já foi reprovado?
          TX_RESP_Q048_alunos,
          # Você gosta de estudar Matemática?
@@ -282,10 +282,10 @@ melhores_cidades <- df_proeficiencia_cidades_qedu_clean %>%
 piores_cidades <- df_proeficiencia_cidades_qedu_clean %>%
   filter(ESTADO %in% piores_estados$ESTADO) %>%
   arrange(PERCENTUAL_APRENDIZADO_ADEQUADO,
-          PERCENTUAL_INSUFICIENTE,
-          PERCENTUAL_BASICO,
-          PERCENTUAL_PROFICIENTE,
-          PERCENTUAL_AVANCADO) %>%
+          desc(PERCENTUAL_INSUFICIENTE),
+          desc(PERCENTUAL_BASICO),
+          desc(PERCENTUAL_PROFICIENTE),
+          desc(PERCENTUAL_AVANCADO)) %>%
   select(COD_MUNICIPIO_COMPLETO,
          CIDADE,
          ESTADO,
@@ -366,3 +366,4 @@ write.table(x = df_alunos_2015_piores_cidades,
                    "/df_alunos_2015_piores_cidades.csv"),
             row.names = FALSE,
             sep = ";")
+
