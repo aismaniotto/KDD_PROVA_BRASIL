@@ -22,7 +22,7 @@ dir_plot <-  paste0(dir_root,"/PLOT")
 ##### Carregar data frames #####
 # df_alunos_2015_melhores_cidades <-
 #   read_delim(file = paste0(dir_dados_pre_processados,
-#                     "/df_alunos_2015_melhores_cidades.csv"),
+#                            "/df_alunos_2015_melhores_cidades.csv"),
 #              delim = ";",
 #              escape_double = FALSE,
 #              trim_ws = TRUE)
