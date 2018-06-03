@@ -20,11 +20,11 @@ dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
 dir_plot <-  paste0(dir_root,"/PLOT")
 
 ##### Carregar data frames #####
-# df_alunos_2015_melhores_cidades <- 
-#   read_delim(file = paste0(dir_dados_pre_processados, 
-#                     "/df_alunos_2015_melhores_cidades.csv"), 
-#              delim = ";", 
-#              escape_double = FALSE, 
+# df_alunos_2015_melhores_cidades <-
+#   read_delim(file = paste0(dir_dados_pre_processados,
+#                     "/df_alunos_2015_melhores_cidades.csv"),
+#              delim = ";",
+#              escape_double = FALSE,
 #              trim_ws = TRUE)
 df_alunos_2015_melhores_cidades <- 
   read.csv2(file = paste0(dir_dados_pre_processados, 
@@ -79,7 +79,7 @@ jpeg(paste0(dir_plot, "/proficiencia_plot_piores_cidades.jpeg"),
 proficiencia_plot_piores_cidades
 dev.off()
 
-# Classificação (supervisionado)
+# Classificação (supervisionado) ===============================================
 ## Árvores de decisão
 # nivel_proficiencia ou ind_aprendizado_adequado
 formula <- nivel_proficiencia ~ TX_RESP_Q013_alunos + 
@@ -90,7 +90,7 @@ formula <- nivel_proficiencia ~ TX_RESP_Q013_alunos +
   TX_RESP_Q053_alunos + TX_RESP_Q054_alunos + TX_RESP_Q055_alunos + 
   TX_RESP_Q057_alunos
 
-### Melhors cidades
+### Melhors cidades ------------------------------------------------------------
 melhores_cidades_ctree <- ctree(formula = formula, 
                                 data = df_alunos_2015_melhores_cidades)
 jpeg(paste0(dir_plot, "/melhores_cidades_plot_ctree.jpeg"), 
@@ -99,7 +99,7 @@ jpeg(paste0(dir_plot, "/melhores_cidades_plot_ctree.jpeg"),
 plot(melhores_cidades_ctree)
 dev.off()
 
-### Piores cidades
+### Piores cidades -------------------------------------------------------------
 piores_cidades_ctree <- ctree(formula = formula, 
                                 data = df_alunos_2015_piores_cidades)
 jpeg(paste0(dir_plot, "/piores_cidades_plot_ctree.jpeg"), 
@@ -108,10 +108,10 @@ jpeg(paste0(dir_plot, "/piores_cidades_plot_ctree.jpeg"),
 plot(piores_cidades_ctree)
 dev.off()
 
-# Associação (não supervisionado)
+# Associação (não supervisionado) ==============================================
 ## Regras de associação
 ### Apriori
-#### Melhores cidades
+#### Melhores cidades ----------------------------------------------------------
 df_melhores_questionario_nivel_prof <- 
   df_alunos_2015_melhores_cidades %>% 
   select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
@@ -127,7 +127,7 @@ df_rules_melhores2 <-
   df_rules_melhores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
-#### Piores cidades
+#### Piores cidades ------------------------------------------------------------
 df_piores_questionario_nivel_prof <- 
   df_alunos_2015_piores_cidades %>% 
   select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) 
@@ -144,7 +144,93 @@ df_rules_piores2 <-
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
 
-# Clusterização (não supervisionado)
-## Detecção de outiliers
+# Clusterização (não supervisionado)============================================
+## K-Means
+### Melhores cidades -----------------------------------------------------------
+clusterização_melhores_cidades <- 
+  df_alunos_2015_melhores_cidades %>% 
+  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) %>% 
+  mutate_at(
+    vars(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos),
+    funs(
+      case_when(
+        . == "A" ~ 1,
+        . == "B" ~ 2,
+        . == "C" ~ 3,
+        . == "D" ~ 4,
+        . == "E" ~ 5,
+        . == "F" ~ 6,
+        . == "G" ~ 7,
+        . == "H" ~ 8,
+        . == "Não Informado" ~ 0
+      )
+    ))
 
+set.seed(20)
+# Clusterização considerando dois clusters
+## relacionando com o label de aprendizagem adequada
+### Sim | Não
+melhores_cidades_cluster_2 <- 
+  kmeans(clusterização_melhores_cidades, 2, nstart = 20)
+# melhores_cidades_cluster
 
+table_melhores_cidades_cluster_2 <- 
+  table(
+    melhores_cidades_cluster_2$cluster, 
+    df_alunos_2015_melhores_cidades$ind_aprendizado_adequado)
+
+# Clusterização considerando quatro clusters
+## relacionando com o label de nível de proficiencia
+### Insuficiente | Básico | Proficiente | Avançado
+melhores_cidades_cluster_4 <- 
+  kmeans(clusterização_melhores_cidades, 4, nstart = 20)
+# melhores_cidades_cluster
+table_melhores_cidades_cluster_4 <- 
+  table(
+    melhores_cidades_cluster_4$cluster, 
+    df_alunos_2015_melhores_cidades$nivel_proficiencia)
+
+### Piores cidades -------------------------------------------------------------
+clusterização_piores_cidades <- 
+  df_alunos_2015_piores_cidades %>% 
+  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) %>% 
+  mutate_at(
+    vars(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos),
+    funs(
+      case_when(
+        . == "A" ~ 1,
+        . == "B" ~ 2,
+        . == "C" ~ 3,
+        . == "D" ~ 4,
+        . == "E" ~ 5,
+        . == "F" ~ 6,
+        . == "G" ~ 7,
+        . == "H" ~ 8,
+        . == "Não Informado" ~ 0
+      )
+    ))
+
+set.seed(20)
+# Clusterização considerando dois clusters
+## relacionando com o label de aprendizagem adequada
+### Sim | Não
+piores_cidades_cluster_2 <- 
+  kmeans(clusterização_piores_cidades, 2, nstart = 20)
+# piores_cidades_cluster
+table_piores_cidades_cluster_2 <- 
+  table(
+    piores_cidades_cluster_2$cluster, 
+    df_alunos_2015_piores_cidades$ind_aprendizado_adequado)
+
+# Clusterização considerando três clusters
+## relacionando com o label de nível de proficiencia
+### Insuficiente | Básico | Proficiente 
+#### Não há registros de nivel avançado nos dados das cidades
+
+piores_cidades_cluster_3 <- 
+  kmeans(clusterização_piores_cidades, 3, nstart = 20)
+# melhores_cidades_cluster
+table_piores_cidades_cluster_3 <- 
+  table(
+    piores_cidades_cluster_3$cluster, 
+    df_alunos_2015_piores_cidades$nivel_proficiencia)
