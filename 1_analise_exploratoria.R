@@ -58,12 +58,12 @@ df_alunos_2015_piores_cidades %>%
 
 # Graficos de qtd de alunos por proficiencia
 proficiencia_plot_melhores_cidades <- df_alunos_2015_melhores_cidades %>%   
-  ggplot(aes(nivel_proficiencia)) + 
+  ggplot(aes(nivel_proficiencia, fill = nivel_proficiencia)) + 
   geom_bar() + 
   ylab('qtd_alunos')
 
 proficiencia_plot_piores_cidades <- df_alunos_2015_piores_cidades %>%   
-  ggplot(aes(nivel_proficiencia)) + 
+  ggplot(aes(nivel_proficiencia, fill = nivel_proficiencia)) + 
   geom_bar() + 
   ylab('qtd_alunos')
 

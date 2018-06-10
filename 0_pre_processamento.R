@@ -237,13 +237,14 @@ df_alunos_2015_clean <- df_alunos_2015_select2 %>%
 # Gráfico de proficiência dos estados
 proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%   
   ggplot(aes(reorder(ESTADO, PERCENTUAL_APRENDIZADO_ADEQUADO),
-             PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
+             PERCENTUAL_APRENDIZADO_ADEQUADO,
+              fill = PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
   geom_bar(stat = "identity") + 
   coord_flip()
 ## Salvando o gráfico
 jpeg(paste0(dir_plot, "/proficiencia_plot_estado.jpeg"), 
      quality = 100,
-     width = 800)
+     width = 900)
 proficiencia_plot_estado
 dev.off()
 
