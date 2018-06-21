@@ -34,21 +34,18 @@ df_proeficiencia_estados_qedu <-
   read_csv(paste0(dir_proeficiencia_estados,
                   "/Aprendizado_nos_estados_do_Brasil_QEdu.csv"))
 
-arr_df_proeficiencia_cidades_qedu <- lapply(df_estados$Nome_UF, 
-                                            function(x) {
-                                              # Carrega arquivo
-                                              t <- read_csv(
-                                                paste0(
-                                                  dir_proeficiencia_cidades,
-                                                  "/Aprendizado_nas_cidades_",
-                                                  x,
-                                                  "_QEdu.csv"))
-                                              # Adiciona coluna com nome do estado
-                                              t <- t %>% 
-                                                mutate(Estado = x)
-                                              return(t)
-                                            }
-)
+arr_df_proeficiencia_cidades_qedu <- 
+  lapply(df_estados$Nome_UF, 
+         function(x) {
+           # Carrega arquivo
+           t <- read_csv(
+             paste0(dir_proeficiencia_cidades,
+                    "/Aprendizado_nas_cidades_",x,"_QEdu.csv"))
+           # Adiciona coluna com nome do estado
+           t <- t %>% mutate(Estado = x)
+           return(t)
+         }
+  )
 
 ## Dados prova brasil 2015
 df_alunos_2015 <- 
