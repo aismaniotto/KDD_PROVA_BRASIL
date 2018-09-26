@@ -8,14 +8,14 @@ dir_root <- getwd()
 
 dir_dados <- paste0(dir_root, "/DATA")
 dir_dados_pre_processados <- paste0(dir_dados, "/pre_processados")
-dir_plot <-  paste0(dir_root, "/PLOT")
+dir_plot <- paste0(dir_root, "/PLOT")
+dir_plot_pre_proc <-  paste0(dir_plot,"/pre_processamento")
 dir_proeficiencia_estados <- paste0(dir_dados, "/proficiencia/estados")
 dir_proeficiencia_cidades <- paste0(dir_dados, "/proficiencia/cidades")
 dir_prova_brasil <- paste0(dir_dados, "/prova_brasil_2015")
 
 # Cria diretorio para os gráficos, caso não exista
-dir.create(dir_plot, recursive = TRUE)
-dir.create(dir_dados_pre_processados, recursive = TRUE)
+dir.create(dir_plot_pre_proc, recursive = TRUE)
 
 ##### Carregar data frames #####
 # Todos os dados foram obtidos através da plataforma QEdu 
@@ -239,7 +239,7 @@ proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%
   geom_bar(stat = "identity") + 
   coord_flip()
 ## Salvando o gráfico
-jpeg(paste0(dir_plot, "/proficiencia_plot_estado.jpeg"), 
+jpeg(paste0(dir_plot_pre_proc, "/proficiencia_plot_estado.jpeg"), 
      quality = 100,
      width = 900)
 proficiencia_plot_estado

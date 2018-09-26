@@ -18,6 +18,10 @@ dir_root <- getwd()
 dir_dados <- paste0(dir_root,"/DATA")
 dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
 dir_plot <-  paste0(dir_root,"/PLOT")
+dir_plot_analise_exploratoria <-  paste0(dir_plot,"/analise_exploratoria")
+
+# Cria diretorio para os gráficos, caso não exista
+dir.create(dir_plot_analise_exploratoria, recursive = TRUE)
 
 ##### Carregar data frames #####
 # df_alunos_2015_melhores_cidades <-
@@ -68,12 +72,14 @@ proficiencia_plot_piores_cidades <- df_alunos_2015_piores_cidades %>%
   ylab('qtd_alunos')
 
 ## Salvando o gráfico
-jpeg(paste0(dir_plot, "/proficiencia_plot_melhores_cidades.jpeg"), 
+jpeg(paste0(dir_plot_analise_exploratoria, 
+            "/proficiencia_plot_melhores_cidades.jpeg"), 
      quality = 100,
      width = 800)
 proficiencia_plot_melhores_cidades
 dev.off()
-jpeg(paste0(dir_plot, "/proficiencia_plot_piores_cidades.jpeg"), 
+jpeg(paste0(dir_plot_analise_exploratoria, 
+            "/proficiencia_plot_piores_cidades.jpeg"), 
      quality = 100,
      width = 800)
 proficiencia_plot_piores_cidades
@@ -115,7 +121,7 @@ df_rules_piores2 <-
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
 # Classificação (supervisionado) ===============================================
-## Árvores de decisão
+## Árvores de inferência condicional
 # nivel_proficiencia ou ind_aprendizado_adequado
 formula <- nivel_proficiencia ~ TX_RESP_Q013_alunos + 
   TX_RESP_Q015_alunos + TX_RESP_Q019_alunos + TX_RESP_Q023_alunos +
@@ -128,7 +134,7 @@ formula <- nivel_proficiencia ~ TX_RESP_Q013_alunos +
 ### Melhors cidades ------------------------------------------------------------
 melhores_cidades_ctree <- ctree(formula = formula, 
                                 data = df_alunos_2015_melhores_cidades)
-jpeg(paste0(dir_plot, "/melhores_cidades_plot_ctree.jpeg"), 
+jpeg(paste0(dir_plot_analise_exploratoria, "/melhores_cidades_plot_ctree.jpeg"), 
      quality = 100,
      width = 1350)
 plot(melhores_cidades_ctree)
@@ -137,7 +143,7 @@ dev.off()
 ### Piores cidades -------------------------------------------------------------
 piores_cidades_ctree <- ctree(formula = formula, 
                                 data = df_alunos_2015_piores_cidades)
-jpeg(paste0(dir_plot, "/piores_cidades_plot_ctree.jpeg"), 
+jpeg(paste0(dir_plot_analise_exploratoria, "/piores_cidades_plot_ctree.jpeg"), 
      quality = 100,
      width = 1000)
 plot(piores_cidades_ctree)
