@@ -228,7 +228,7 @@ df_alunos_2015_select2 <- df_alunos_2015_select1 %>%
 ## Preenchimento das respostas não preenchidas (NA) por "NA"
 df_alunos_2015_clean <- df_alunos_2015_select2 %>% 
   mutate_at(vars(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos),
-            funs(if_else(is.na(.),"Não Informado",.)))
+            funs(if_else(is.na(.),"Nao Informado",.)))
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
@@ -306,11 +306,11 @@ df_alunos_2015_piores_cidades <-
 #### Transformação de dados ####
 # Criação das colunas indicando o nível de proficiência do estudante
 ## Nível proficiente 
-### Insuficiente, Básico, Proficiente ou Avançado
+### Insuficiente, Basico, Proficiente ou Avancado
 #### Insuficiente: 0 a 224 pontos
-#### Básico: 225 a 299 pontos
+#### Basico: 225 a 299 pontos
 #### Proficiente: 300 a 349 pontos
-#### Avançado: Igual ou maior que 350
+#### Avancado: Igual ou maior que 350
 ## Aprendizado adequado 
 ### Sim = Nível proficiente ou avançado; Não = Nível básico ou insuficiente
 df_alunos_2015_melhores_cidades <- 
@@ -319,17 +319,17 @@ df_alunos_2015_melhores_cidades <-
            case_when(
              PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
              PROFICIENCIA_MT_SAEB_alunos >= 225 &
-               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Básico",
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Basico",
              PROFICIENCIA_MT_SAEB_alunos >= 300 &
                PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
-             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avançado"
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avancado"
            ),
          ind_aprendizado_adequado = 
            case_when(
              nivel_proficiencia == "Insuficiente" | 
-               nivel_proficiencia == "Básico" ~ "Não",
+               nivel_proficiencia == "Basico" ~ "Nao",
              nivel_proficiencia == "Proficiente" | 
-               nivel_proficiencia == "Avançado" ~ "Sim"
+               nivel_proficiencia == "Avancado" ~ "Sim"
            )
          )
 
@@ -339,17 +339,17 @@ df_alunos_2015_piores_cidades <-
            case_when(
              PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
              PROFICIENCIA_MT_SAEB_alunos >= 225 &
-               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Básico",
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Basico",
              PROFICIENCIA_MT_SAEB_alunos >= 300 &
                PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
-             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avançado"
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avancado"
            ),
          ind_aprendizado_adequado = 
            case_when(
              nivel_proficiencia == "Insuficiente" | 
-               nivel_proficiencia == "Básico" ~ "Não",
+               nivel_proficiencia == "Basico" ~ "Nao",
              nivel_proficiencia == "Proficiente" | 
-               nivel_proficiencia == "Avançado" ~ "Sim"
+               nivel_proficiencia == "Avancado" ~ "Sim"
            )
   )
 
