@@ -1,0 +1,58 @@
+"id_Char";"id_Questao";"Enunciado";"A";"B";"C";"D";"E";"F";"G";"H";"I";"J";"K";"L";"qtd_opcoes"
+"TX_RESP_Q001";"1";"Qual é o seu sexo?";"Masculino.";"Feminino.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q002";"2";"Como você se considera?";"Branco(a).";"Pardo(a).";"Preto(a).";"Amarelo(a).";"Indígena.";"Não Sei.";NA;NA;NA;NA;NA;NA;6
+"TX_RESP_Q003";"3";"Você poderia nos dizer qual é o mês de seu aniversário?";"Janeiro.";"Fevereiro.";"Março.";"Abril.";"Maio.";"Junho.";"Julho.";"Agosto.";"Setembro.";"Outubro.";"Novembro.";"Dezembro.";12
+"TX_RESP_Q004";"4";"Em que ano você nasceu?";"2003 ou depois.";"2002.";"2001.";"2000.";"1999.";"1998.";"1997.";"1996 ou antes.";NA;NA;NA;NA;8
+"TX_RESP_Q005";"5";"Na sua casa tem televisão em cores?";"Não tem.";"Sim, uma.";"Sim, duas.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q006";"6";"Na sua casa tem rádio?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q007";"7";"Na sua casa tem videocassete e/ou DVD?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q008";"8";"Na sua casa tem geladeira?";"Não tem.";"Sim, uma.";"Sim, duas.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q009";"9";"Na sua casa tem freezer (parte da geladeira duplex)?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q010";"10";"Na sua casa tem freezer separado da geladeira?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q011";"11";"Na sua casa tem máquina de lavar roupa (O tanquinho NÃO deve ser considerado)?";"Não tem.";"Sim, uma.";"Sim, duas.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q012";"12";"Na sua casa tem carro?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q013";"13";"Na sua casa tem computador?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q014";"14";"Na sua casa tem banheiro?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q015";"15";"Na sua casa tem quartos para dormir?";"Não tem.";"Sim, um.";"Sim, dois.";"Sim, três.";"Sim, quatro ou mais.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q016";"16";"Incluindo você, quantas pessoas vivem atualmente em sua casa?";"Uma, pois moro sozinho(a).";"Duas.";"Três.";"Quatro.";"Cinco.";"Seis pessoas ou mais.";NA;NA;NA;NA;NA;NA;6
+"TX_RESP_Q017";"17";"Em sua casa trabalha empregado(a) doméstico(a) pelo menos cinco dias por semana?";"Não.";"Sim, um(a) empregado(a).";"Sim, dois(duas) empregados(as).";"Sim, três empregados(as).";"Sim, quatro ou mais empregados(as).";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q018";"18";"Você mora com sua mãe?";"Sim.";"Não.";"Não, mas moro com outra mulher responsável por mim.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q019";"19";"Até que série sua mãe, ou a mulher responsável por você, estudou?";"Nunca estudou.";"Não completou a 4.ª série/5.º ano.";"Completou a 4.ª série/5.º ano, mas não completou a 8.ª série/9.º ano.";"Completou a 8.ª série/9.º ano, mas não completou o Ensino Médio.";"Completou o Ensino Médio, mas não completou a Faculdade.";"Completou a Faculdade.";"Não sei.";NA;NA;NA;NA;NA;7
+"TX_RESP_Q020";"20";"Sua mãe, ou a mulher responsável por você, sabe ler e escrever?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q021";"21";"Você vê sua mãe, ou mulher responsável por você, lendo?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q022";"22";"Você mora com seu pai?";"Sim.";"Não.";"Não, mas moro com outro homem responsável por mim.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q023";"23";"Até que série seu pai, ou o homem responsável por você, estudou?";"Nunca estudou.";"Não completou a 4.ª série/5.º ano.";"Completou a 4.ª série/5.º ano, mas não completou a 8.ª série/9.º ano.";"Completou a 8.ª série/9.º ano, mas não completou o Ensino Médio.";"Completou o Ensino Médio, mas não completou a Faculdade.";"Completou a Faculdade.";"Não sei.";NA;NA;NA;NA;NA;7
+"TX_RESP_Q024";"24";"Seu pai, ou homem responsável por você, sabe ler e escrever?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q025";"25";"Você vê o seu pai, ou homem responsável por você, lendo?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q026";"26";"Com qual frequência seus pais, ou responsáveis por você, vão à reunião de pais?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q027";"27";"Seus pais ou responsáveis incentivam você a estudar?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q028";"28";"Seus pais ou responsáveis incentivam você a fazer o dever de casa e/ou os trabalhos da escola?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q029";"29";"Seus pais ou responsáveis incentivam você a ler?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q030";"30";"Seus pais ou responsáveis incentivam você a ir a escola e/ou não faltar às aulas?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q031";"31";"Seus pais ou responsáveis conversam com você sobre o que acontece na escola?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q032";"32";"Com qual frequência você lê: Jornais.";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q033";"33";"Com qual frequência você lê: Livros em geral.";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q034";"34";"Com qual frequência você lê: Livros de literatura.";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q035";"35";"Com qual frequência você lê: Revistas em geral.";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q036";"36";"Com qual frequência você lê: Revistas em quadrinhos (gibis).";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q037";"37";"Com qual frequência você lê: Revistas de comportamento, celebridades, esportes ou TV.";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q038";"38";"Com qual frequência você lê: Notícias na internet (ex.: blog, notícia).";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q039";"39";"Com qual frequência você costuma ir à biblioteca?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q040";"40";"Com qual frequência você costuma ir ao cinema?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q041";"41";"Com qual frequência você costuma ir a algum tipo de espetáculo ou exposição (teatro, museu, dança, música)?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q042";"42";"Com qual frequência você participa de festas na sua vizinhaça ou comunidade?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q043";"43";"Em dia de aula, quanto tempo você gasta assistindo à TV, navegando na internet ou jogando jogos eletrônicos?";"Menos de 1 hora.";"Entre 1 e 2 horas.";"Mais de 2 horas, até 3 horas.";"Mais de 3 horas.";"Não vejo TV, não navego na internet e não jogo jogos eletrônicos.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q044";"44";"Em dias de aula, quanto tempo você gasta fazendo trabalhos domésticos (ex.: lavando louça, limpando o quintal etc.)?";"Menos de 1 hora.";"Entre 1 e 2 horas.";"Mais de 2 horas, até 3 horas.";"Mais de 3 horas.";"Não faço trabalhos domésticos.";NA;NA;NA;NA;NA;NA;NA;5
+"TX_RESP_Q045";"45";"Atualmente você trabalha fora de casa (recebendo ou não um salário)?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q046";"46";"Quando você entrou na escola?";"Na creche (0 a 3 anos).";"Na pré-escola (4 a 5 anos).";"Na primeira série ou primeiro ano (6 a 7 anos).";"Depois da primeira série.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q047";"47";"A partir da quinta série ou sexto ano, em que tipo de escola você estudou?";"Somente em escola pública.";"Somente em escola particular.";"Em escola pública e em escola particular.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q048";"48";"Você já foi reprovado?";"Não.";"Sim, uma vez.";"Sim, duas vezes ou mais.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q049";"49";"Você já abandonou a escola durante o período de aulas e ficou fora da escola o resto do ano?";"Não.";"Sim, uma vez.";"Sim, duas vezes ou mais.";NA;NA;NA;NA;NA;NA;NA;NA;NA;3
+"TX_RESP_Q050";"50";"Você gosta de estudar Língua Portuguesa?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q051";"51";"Você faz o dever de casa de Língua Portuguesa?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";"O(A) professor(a) não passa dever de casa.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q052";"52";"O(A) professor(a) corrige o dever de casa de Língua Portuguesa?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";"O(A) professor(a) não passa dever de casa.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q053";"53";"Você gosta de estudar Matemática?";"Sim.";"Não.";NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;2
+"TX_RESP_Q054";"54";"Você faz o dever de casa de Matemática?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";"O(A) professor(a) não passa dever de casa.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q055";"55";"O(A) professor(a) corrige o dever de casa de Matemática?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";"O(A) professor(a) não passa dever de casa.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q056";"56";"Você utiliza a biblioteca ou sala de leitura da sua escola?";"Sempre ou quase sempre.";"De vez em quando.";"Nunca ou quase nunca.";"A escola não possui biblioteca ou sala de leitura.";NA;NA;NA;NA;NA;NA;NA;NA;4
+"TX_RESP_Q057";"57";"Quando você terminar o 9º ano(8ª série) você pretende:";"Somente continuar estudando.";"Somente trabalhar.";"Continuar estudando e trabalhar.";"Ainda não sei.";NA;NA;NA;NA;NA;NA;NA;NA;4
