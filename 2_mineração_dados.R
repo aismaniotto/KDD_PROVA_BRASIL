@@ -38,6 +38,12 @@ df_alunos_2015_piores_cidades <-
 
 
 # C5.0 (supervisionado) ========================================================
+# Configuração para o algoritmo
+## Utilizando poda
+## utilizando fuzzy threshold
+c5_0_config <- C5.0Control(noGlobalPruning = FALSE,
+                           fuzzyThreshold = TRUE)
+
 ## Melhores cidades ------------------------------------------------------------
 # Árvore de decisão
 vars <- df_alunos_2015_melhores_cidades %>% 
@@ -45,7 +51,8 @@ vars <- df_alunos_2015_melhores_cidades %>%
   names
 
 tree_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
-                         y = df_alunos_2015_melhores_cidades$nivel_proficiencia)
+                         y = df_alunos_2015_melhores_cidades$nivel_proficiencia,
+                         control = c5_0_config)
 
 summary(tree_mod_melhores)
 jpeg(paste0(dir_plot_mineracao_dados, "/melhores_cidades_c50.jpeg"),
@@ -59,6 +66,7 @@ dev.off()
 # Regras
 rules_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
                            y = df_alunos_2015_melhores_cidades$nivel_proficiencia,
+                           control = c5_0_config,
                            rules = TRUE)
 summary(rules_mod_melhores)
 
@@ -69,7 +77,8 @@ vars <- df_alunos_2015_piores_cidades %>%
   names
 
 tree_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
-                        y = df_alunos_2015_piores_cidades$nivel_proficiencia)
+                        y = df_alunos_2015_piores_cidades$nivel_proficiencia, 
+                        control = c5_0_config)
 
 summary(tree_mod_piores)
 jpeg(paste0(dir_plot_mineracao_dados, "/piores_cidades_c50.jpeg"), 
@@ -82,6 +91,7 @@ dev.off()
 # Regras
 rules_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
                          y = df_alunos_2015_piores_cidades$nivel_proficiencia,
+                         control = c5_0_config,
                          rules = TRUE)
 summary(rules_mod_piores)
 
@@ -118,5 +128,11 @@ df_rules_piores2 <-
   df_rules_piores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
+# Redes neurais Kohonen (não-supervisionado) ===================================
+# Mapas auto-organizáveis (The Self-Organizing Maps - SOM) 
+## Melhores cidades ------------------------------------------------------------
+
+
+## Piores cidades --------------------------------------------------------------
 
 
