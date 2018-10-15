@@ -21,7 +21,7 @@ dir_dados_minerados <- paste0(dir_dados,"/minerados")
 dir_plot <-  paste0(dir_root,"/PLOT")
 dir_plot_mineracao_dados <-  paste0(dir_plot,"/mineracao_dados")
 
-# Cria diretorio para os gráficos, caso não exista
+# Cria diretorio, caso não exista
 dir.create(dir_plot_mineracao_dados, recursive = TRUE)
 dir.create(dir_dados_minerados, recursive = TRUE)
 
@@ -119,7 +119,7 @@ df_rules_melhores2 <-
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
 write.table(df_rules_melhores, 
-            paste0(dir_dados_minerados, "/apriori_regras_melhroes_cidades"))
+            paste0(dir_dados_minerados, "/apriori_regras_melhores_cidades"))
 
 #### Piores cidades ------------------------------------------------------------
 df_piores_questionario_nivel_prof <- 
