@@ -17,11 +17,13 @@ dir_root <- getwd()
 
 dir_dados <- paste0(dir_root,"/DATA")
 dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
+dir_dados_minerados <- paste0(dir_dados,"/minerados")
 dir_plot <-  paste0(dir_root,"/PLOT")
 dir_plot_mineracao_dados <-  paste0(dir_plot,"/mineracao_dados")
 
 # Cria diretorio para os gráficos, caso não exista
 dir.create(dir_plot_mineracao_dados, recursive = TRUE)
+dir.create(dir_dados_minerados, recursive = TRUE)
 
 ##### Carregar data frames #####
 df_alunos_2015_melhores_cidades <- 
@@ -69,6 +71,8 @@ rules_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
                            control = c5_0_config,
                            rules = TRUE)
 summary(rules_mod_melhores)
+write(rules_mod_melhores$rules, file = paste0(dir_dados_minerados,
+                                       "/C50_regras_melhores.txt"))
 
 ## Piores cidades --------------------------------------------------------------
 # Árvore de decisão
@@ -94,6 +98,8 @@ rules_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
                          control = c5_0_config,
                          rules = TRUE)
 summary(rules_mod_piores)
+write(rules_mod_piores$rules, file = paste0(dir_dados_minerados,
+                                            "/C50_regras_piores.txt"))
 
 # Apriori (não-supervisionado) =================================================
 #### Melhores cidades ----------------------------------------------------------
@@ -112,6 +118,9 @@ df_rules_melhores2 <-
   df_rules_melhores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
+write.table(df_rules_melhores, 
+            paste0(dir_dados_minerados, "/apriori_regras_melhroes_cidades"))
+
 #### Piores cidades ------------------------------------------------------------
 df_piores_questionario_nivel_prof <- 
   df_alunos_2015_piores_cidades %>% 
@@ -127,6 +136,9 @@ df_rules_piores <- as(rules_piores, "data.frame")
 df_rules_piores2 <- 
   df_rules_piores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
+
+write.table(df_rules_piores, 
+            paste0(dir_dados_minerados, "/apriori_regras_piores_cidades"))
 
 # Redes neurais Kohonen (não-supervisionado) ===================================
 # Mapas auto-organizáveis (The Self-Organizing Maps - SOM) 
