@@ -125,12 +125,11 @@ ind <- sample(2, nrow(df_2015_mod3), replace = T, prob = c(0.7, 0.3))
 train <- df_2015_mod3[ind == 1,]
 test <- df_2015_mod3[ind == 2,]
 
-## Normalização
-trainX <- scale(train[,-1])
-testX <- scale(test[,-1],
-               center = attr(trainX, "scaled:center"),
-               scale = attr(trainX, "scaled:scale"))
+# Transformação para matrix
+trainX <- as.matrix(train[,-1])
+testX <- as.matrix(test[,-1])
 trainY <- factor(train[,1])
+
 
 Y <- factor(test[,1])
 test[,1] <- 0
@@ -140,13 +139,19 @@ testXY <- list(independent = testX, dependent = test[,1])
 set.seed(222)
 map1 <- xyf(trainX,
             classvec2classmat(factor(trainY)),
-            grid = somgrid(15, 15, "hexagonal", toroidal = TRUE),
-            rlen = 100)
+            grid = 
+              somgrid(xdim = 17, 
+                      ydim = 17, 
+                      topo = "hexagonal", 
+                      toroidal = FALSE),
+            rlen = 100,
+            dist.fcts = "euclidean")
+
 plot(map1)
 
 # Prediction
 pred <- predict(map1, newdata = testXY)
-table(Predicted = pred$predictions[[2]], Actual = Y)
+table(Predicted = pred1$predictions[[2]], Actual = Y)
 
 
 # Cluster Boundaries
