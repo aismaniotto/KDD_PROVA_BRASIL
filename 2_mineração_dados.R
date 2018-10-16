@@ -118,8 +118,10 @@ df_rules_melhores2 <-
   df_rules_melhores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
-write.table(df_rules_melhores, 
-            paste0(dir_dados_minerados, "/apriori_regras_melhores_cidades"))
+write.table(x =  df_rules_melhores, 
+            file = paste0(dir_dados_minerados, 
+                          "/apriori_regras_melhores_cidades"), 
+            sep = ";")
 
 #### Piores cidades ------------------------------------------------------------
 df_piores_questionario_nivel_prof <- 
@@ -137,8 +139,10 @@ df_rules_piores2 <-
   df_rules_piores %>% 
   separate(col = rules, into = c("rules_LHS", "rules_RHS"), sep = " => ")
 
-write.table(df_rules_piores, 
-            paste0(dir_dados_minerados, "/apriori_regras_piores_cidades"))
+write.table(x = df_rules_piores, 
+            file = paste0(dir_dados_minerados, 
+                          "/apriori_regras_piores_cidades"),
+            sep = ";")
 
 # Redes neurais Kohonen (não-supervisionado) ===================================
 # Mapas auto-organizáveis (The Self-Organizing Maps - SOM) 
