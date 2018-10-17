@@ -6,6 +6,8 @@ library(tidyr)
 library(stringr)
 # importação de dados
 library(readr)
+# utils.R
+source("utils.R")
 
 #### Diretorios #####
 dir_root <- getwd() 
@@ -13,9 +15,10 @@ dir_root <- getwd()
 dir_dados <- paste0(dir_root,"/DATA")
 dir_dados_pre_processados <- paste0(dir_dados,"/pre_processados")
 dir_dados_minerados <- paste0(dir_dados,"/minerados")
+dir_dados_visu_natural <- paste0(dir_dados_minerados,"/visualizacao_natural")
 
 # Cria diretorio para os gráficos, caso não exista
-dir.create(dir_dados_minerados, recursive = TRUE)
+dir.create(dir_dados_visu_natural, recursive = TRUE)
 
 ##### Carregar data frames #####
 apriori_melhores_cidades <- 
@@ -43,132 +46,24 @@ df_indice_questoes <-
             stringsAsFactors = FALSE)
 
 # Apriori: regras ==============================================================
-## Separação das perguntas e respostas em colunas distintas
-# Isso facilitará a transformação dos simbolos nas questões:
-## Ou seja, o simbolico "TX_RESP_XX" no enunciado da questão e a opção "A", "B",
-## "C", etc nas opções disponiveis na questão
+# Melhores cidades
+apriori_melhores_cidades_mod <- 
+  apresentar_regras_apriori(apriori_melhores_cidades)
 
-### Separação básica das condições para o resultado
-apriori_melhores_cidades2 <- 
-  apriori_melhores_cidades %>% 
-  mutate(rules = gsub("\\{|\\}", "",rules)) %>% 
-  separate(rules, c("rules_a", "gera", "rules_b"), " ") %>% 
-  mutate(id = row_number())
+write.table(x = apriori_melhores_cidades_mod, 
+            file = paste0(dir_dados_visu_natural, 
+                          "/apriori_regras_melhores_cidades_natural"),
+            row.names = FALSE,
+            sep = ";")
 
-### Inicio dos trabalhos, começando pelas regras da esqueda
-rules_a <- apriori_melhores_cidades2 %>% 
-  select(rules_a, id)
+# Piores cidades
+apriori_piores_cidades_mod <- 
+  apresentar_regras_apriori(apriori_piores_cidades)
 
-#### Loop utilizado para saber quantas novas colunas serão criadas:
-# Para os casos onde a regra é composta pela condição de mais de uma regra
-i <- 1
-max <- rules_a %>% nrow()
-max_commas <- 0
-while (i <= max) {
-  
-  commas <- str_count(rules_a$rules_a[[i]], ",")
-  
-  if (commas > max_commas) {
-    max_commas <- commas
-  }
-  
-  i <- i + 1
-}
+write.table(x = apriori_piores_cidades_mod, 
+            file = paste0(dir_dados_visu_natural, 
+                          "/apriori_regras_piores_cidades_natural"),
+            row.names = FALSE,
+            sep = ";")
 
-#### Definição fantasia dos nomes das novas colunas
-novas_colunas <- c(1:(max_commas + 1)) %>% 
-  paste0("rule")
-col_questao <- paste0(novas_colunas, "_questao")
-col_resposta <- paste0(novas_colunas, "_resposta")
-
-#### Separação em novas colunas
-rules_a2 <- 
-  rules_a %>% 
-  separate(rules_a, novas_colunas, ",")
-
-##### Loop utilizado para colocar a questão em uma coluna e a resposta em outra
-rules_a3 <- rules_a2
-i <- 1
-max <- novas_colunas %>% length()
-while (i <= max) {
-  
-  rules_a3 <- 
-    rules_a3 %>% 
-    separate(!!novas_colunas[i], 
-             c(col_questao[i], col_resposta[i]), "=")
-  
-  i <- i + 1
-}
-
-###### Troca das opções categoricas nas opções "verbosas" da prova
-# O sufixo "_alunos" é herança da seleção dos dados, onde, apesar de ter sido
-# utilizado apenas os dados dos alunos, era possível utilizar outros dados 
-# disponibilizados juntamente à esses, como por exemplo, os dados da escola
-df_indice_questoes_aux <- 
-  df_indice_questoes %>% 
-  mutate(id_Char_aux = paste0(id_Char,"_alunos"))
-
-df_indice_questoes_questao <- 
-  df_indice_questoes_aux %>% 
-  select(id_Char_aux, Enunciado)
-
-df_indice_questoes_opcao <- 
-  df_indice_questoes_aux %>%
-  select(id_Char_aux, A:L) %>% 
-  gather(key = opcao, value = verbosidade, -id_Char_aux) %>% 
-  filter(!is.na(verbosidade)) %>% 
-  arrange(id_Char_aux)
-
-rules_a4 <- rules_a3
-i <- 1
-max <- novas_colunas %>% length()
-
-while (i <= max) {
-  
-  rules_a4 <- 
-    rules_a4 %>% 
-    left_join(df_indice_questoes_opcao, 
-              by = setNames(c('id_Char_aux', 'opcao'), 
-                            c(col_questao[i], col_resposta[i])
-              )
-    ) %>% 
-    left_join(df_indice_questoes_questao,
-              by = setNames(c('id_Char_aux'), c(col_questao[i]))
-    ) %>%
-    mutate(!!col_resposta[i] := verbosidade, 
-           !!col_questao[i] := Enunciado) %>% 
-    select(-verbosidade, -Enunciado)
-  
-  i <- i + 1
-}
-
-##### Iniciar reunião das colunas, agora com os dados renomeados
-## Unindo questão e resposta
-rules_a5 <- rules_a4
-i <- 1
-max <- novas_colunas %>% length()
-while (i <= max) {
-  
-  rules_a5 <- 
-    rules_a5 %>% 
-    unite(!!novas_colunas[i], 
-          !!col_questao[i], 
-          !!col_resposta[i], 
-          sep = "=")
-  
-  i <- i + 1
-}
-
-## Unindo as regras
-rules_a6 <- 
-  rules_a5 %>% 
-  mutate_at(
-    vars(novas_colunas),
-    funs(gsub(",NA=NA", "", .))
-  ) %>% 
-  mutate_at(
-    vars(novas_colunas),
-    funs(paste0("{",.,"}"))
-  ) %>% 
-  unite(rules_a, !!novas_colunas, sep = ",")
 
