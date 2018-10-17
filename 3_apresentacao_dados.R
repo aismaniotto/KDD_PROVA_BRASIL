@@ -78,6 +78,8 @@ while (i <= max) {
 #### Definição fantasia dos nomes das novas colunas
 novas_colunas <- c(1:(max_commas + 1)) %>% 
   paste0("rule")
+col_questao <- paste0(novas_colunas, "_questao")
+col_resposta <- paste0(novas_colunas, "_resposta")
 
 #### Separação em novas colunas
 rules_a2 <- 
@@ -93,9 +95,7 @@ while (i <= max) {
   rules_a3 <- 
     rules_a3 %>% 
     separate(!!novas_colunas[i], 
-             c(paste0(novas_colunas[i], "_questao"),
-               paste0(novas_colunas[i], "_resposta")),
-             "=")
+             c(col_questao[i], col_resposta[i]), "=")
   
   i <- i + 1
 }
@@ -125,26 +125,50 @@ max <- novas_colunas %>% length()
 
 while (i <= max) {
   
-  col_questao <- paste0(novas_colunas[i], "_questao")
-  col_resposta <- paste0(novas_colunas[i], "_resposta")
-  
   rules_a4 <- 
     rules_a4 %>% 
     left_join(df_indice_questoes_opcao, 
               by = setNames(c('id_Char_aux', 'opcao'), 
-                            c(col_questao, col_resposta)
+                            c(col_questao[i], col_resposta[i])
               )
     ) %>% 
     left_join(df_indice_questoes_questao,
-              by = setNames(c('id_Char_aux'), c(col_questao))
+              by = setNames(c('id_Char_aux'), c(col_questao[i]))
     ) %>%
-    mutate(!!col_resposta := verbosidade, 
-           !!col_questao := Enunciado) %>% 
+    mutate(!!col_resposta[i] := verbosidade, 
+           !!col_questao[i] := Enunciado) %>% 
     select(-verbosidade, -Enunciado)
   
   i <- i + 1
 }
 
+##### Iniciar reunião das colunas, agora com os dados renomeados
+## Unindo questão e resposta
+rules_a5 <- rules_a4
+i <- 1
+max <- novas_colunas %>% length()
+while (i <= max) {
+  
+  rules_a5 <- 
+    rules_a5 %>% 
+    unite(!!novas_colunas[i], 
+          !!col_questao[i], 
+          !!col_resposta[i], 
+          sep = "=")
+  
+  i <- i + 1
+}
 
-
+## Unindo as regras
+rules_a6 <- 
+  rules_a5 %>% 
+  mutate_at(
+    vars(novas_colunas),
+    funs(gsub(",NA=NA", "", .))
+  ) %>% 
+  mutate_at(
+    vars(novas_colunas),
+    funs(paste0("{",.,"}"))
+  ) %>% 
+  unite(rules_a, !!novas_colunas, sep = ",")
 
