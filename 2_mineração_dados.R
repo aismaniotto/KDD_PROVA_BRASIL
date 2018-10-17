@@ -121,6 +121,7 @@ df_rules_melhores2 <-
 write.table(x =  df_rules_melhores, 
             file = paste0(dir_dados_minerados, 
                           "/apriori_regras_melhores_cidades"), 
+            row.names = FALSE,
             sep = ";")
 
 #### Piores cidades ------------------------------------------------------------
@@ -142,6 +143,7 @@ df_rules_piores2 <-
 write.table(x = df_rules_piores, 
             file = paste0(dir_dados_minerados, 
                           "/apriori_regras_piores_cidades"),
+            row.names = FALSE,
             sep = ";")
 
 # Redes neurais Kohonen (não-supervisionado) ===================================
