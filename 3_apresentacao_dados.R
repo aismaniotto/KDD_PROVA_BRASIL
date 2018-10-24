@@ -33,7 +33,7 @@ c50_melhores_cidades <-
   read.csv2(file = paste0(dir_dados_minerados, 
                           "/C50_regras_melhores"))
 
-c50_melhores_piores <- 
+c50_piores_piores <- 
   read.csv2(file = paste0(dir_dados_minerados, 
                           "/C50_regras_piores"))
 
@@ -65,5 +65,10 @@ write.table(x = apriori_piores_cidades_mod,
                           "/apriori_regras_piores_cidades_natural"),
             row.names = FALSE,
             sep = ";")
+
+# C5.0: regras =================================================================
+c50_melhores_cidades
+
+
 
 
