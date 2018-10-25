@@ -40,17 +40,23 @@ df_alunos_2015_piores_cidades <-
 
 
 # C5.0 (supervisionado) ========================================================
+set.seed(500)
 # Configuração para o algoritmo
 ## Utilizando poda
-## utilizando fuzzy threshold
-c5_0_config <- C5.0Control(noGlobalPruning = FALSE,
-                           fuzzyThreshold = TRUE)
+c5_0_config <- C5.0Control(noGlobalPruning = FALSE)
 
 ## Melhores cidades ------------------------------------------------------------
 # Árvore de decisão
 vars <- df_alunos_2015_melhores_cidades %>% 
   select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) %>% 
   names
+
+# Removendo entradas que prejudicam/confundem o algoritmo
+## "TX_RESP_Q013_alunos" -> Na sua casa tem computador?
+## "TX_RESP_Q026_alunos" -> Com qual frequência seus pais, ou responsáveis por 
+### você, vão à reunião de pais?
+## "TX_RESP_Q054_alunos" -> Você faz o dever de casa de Matemática?
+vars <- vars[c(-1, -5, -15)]
 
 tree_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
                          y = df_alunos_2015_melhores_cidades$nivel_proficiencia,
@@ -59,8 +65,8 @@ tree_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
 summary(tree_mod_melhores)
 jpeg(paste0(dir_plot_mineracao_dados, "/melhores_cidades_c50.jpeg"),
      quality = 100,
-     width = 32000,
-     height = 2000)
+     width = 6000,
+     height = 2500)
     
 plot(tree_mod_melhores)
 dev.off()
@@ -80,6 +86,11 @@ vars <- df_alunos_2015_piores_cidades %>%
   select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) %>% 
   names
 
+# Removendo entrada que prejudica/confunde o algoritmo
+## "TX_RESP_Q043_alunos" -> Em dias de aula, quanto tempo você gasta assistindo 
+## à TV, navegando na internet ou jogando jogos eletrônicos?
+vars <- vars[-10]
+
 tree_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
                         y = df_alunos_2015_piores_cidades$nivel_proficiencia, 
                         control = c5_0_config)
@@ -87,8 +98,8 @@ tree_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
 summary(tree_mod_piores)
 jpeg(paste0(dir_plot_mineracao_dados, "/piores_cidades_c50.jpeg"), 
      quality = 100,
-     width = 16000, 
-     height = 1000)
+     width = 6000, 
+     height = 2500)
 plot(tree_mod_piores)
 dev.off()
 
