@@ -10,7 +10,7 @@ library(ggplot2)
 library(party)
 library(arules)
 library(C50)
-library(DMwR)
+library(e1071)
 
 #### Diretorios #####
 dir_root <- getwd() 
@@ -39,7 +39,7 @@ df_alunos_2015_piores_cidades <-
             stringsAsFactors = TRUE)
 
 
-# C5.0 (supervisionado) ========================================================
+# C5.0 (Classificação) =========================================================
 set.seed(500)
 # Configuração para o algoritmo
 ## Utilizando poda
@@ -112,7 +112,7 @@ summary(rules_mod_piores)
 write(rules_mod_piores$rules, file = paste0(dir_dados_minerados,
                                             "/C50_regras_piores"))
 
-# Apriori (não-supervisionado) =================================================
+# Apriori (Associação) =========================================================
 #### Melhores cidades ----------------------------------------------------------
 df_melhores_questionario_nivel_prof <- 
   df_alunos_2015_melhores_cidades %>% 
@@ -157,11 +157,36 @@ write.table(x = df_rules_piores,
             row.names = FALSE,
             sep = ";")
 
-# Redes neurais Kohonen (não-supervisionado) ===================================
-# Mapas auto-organizáveis (The Self-Organizing Maps - SOM) 
+# Naives Bayes (Classificação) =================================================
 ## Melhores cidades ------------------------------------------------------------
+df_alunos_2015_melhores_cidades_nb <- 
+  df_alunos_2015_melhores_cidades %>% 
+  select(nivel_proficiencia, TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
 
+melhores_cidades_nb_model <- 
+  naiveBayes(nivel_proficiencia ~ ., data = df_alunos_2015_melhores_cidades_nb)
+
+melhores_cidades_NB_Predictions <- 
+  predict(melhores_cidades_nb_model, 
+          df_alunos_2015_melhores_cidades_nb)
+
+melhores_cidades_confusion <- 
+  table(melhores_cidades_NB_Predictions,
+        df_alunos_2015_melhores_cidades_nb$nivel_proficiencia)
 
 ## Piores cidades --------------------------------------------------------------
+df_alunos_2015_piores_cidades_nb <- 
+  df_alunos_2015_piores_cidades %>% 
+  select(nivel_proficiencia, TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
 
+piores_cidades_nb_model <- 
+  naiveBayes(nivel_proficiencia ~ ., data = df_alunos_2015_piores_cidades_nb)
+
+piores_cidades_NB_Predictions <- 
+  predict(piores_cidades_nb_model, 
+          df_alunos_2015_piores_cidades_nb)
+
+piores_cidades_confusion <- 
+  table(piores_cidades_NB_Predictions,
+        df_alunos_2015_piores_cidades_nb$nivel_proficiencia)
 
