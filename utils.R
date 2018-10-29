@@ -149,3 +149,35 @@ adequar_coluna_regras <- function(df_col_regras) {
   
   return(df_col_regras6)
 }
+
+troca_idchar_por_enunciado <- function(idchar) {
+  df_indice_questoes_mod <- df_indice_questoes %>% 
+    mutate(id_Char = paste0(id_Char, "_alunos"),
+           Enunciado = paste0(row_number(), " - ", Enunciado))
+  
+  enunciado <- df_indice_questoes_mod$Enunciado[
+    df_indice_questoes_mod$id_Char == idchar]
+  
+  enunciado <- as.character(enunciado)
+  
+  return(enunciado)
+}
+
+troca_letra_por_opcao <- function(idchar, opcoes) {
+  df_indice_questoes_mod <- df_indice_questoes %>% 
+    mutate(id_Char = paste0(id_Char, "_alunos"),
+           Enunciado = paste0(row_number(), " - ", Enunciado))
+  
+  i <- 1
+  max <- length(opcoes)
+  opcoes_new <- NULL
+  
+  while (i <= max) {
+    opcoes_new[i] <- df_indice_questoes_mod[df_indice_questoes_mod$id_Char == idchar,
+                           opcoes[i]]
+
+    i <- i + 1
+  }
+  
+  return(opcoes_new)
+}
