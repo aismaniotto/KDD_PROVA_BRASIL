@@ -153,7 +153,7 @@ adequar_coluna_regras <- function(df_col_regras) {
 troca_idchar_por_enunciado <- function(idchar) {
   df_indice_questoes_mod <- df_indice_questoes %>% 
     mutate(id_Char = paste0(id_Char, "_alunos"),
-           Enunciado = paste0(row_number(), " - ", Enunciado))
+           Enunciado = paste0(id_Questao, " - ", Enunciado))
   
   enunciado <- df_indice_questoes_mod$Enunciado[
     df_indice_questoes_mod$id_Char == idchar]
@@ -166,7 +166,7 @@ troca_idchar_por_enunciado <- function(idchar) {
 troca_letra_por_opcao <- function(idchar, opcoes) {
   df_indice_questoes_mod <- df_indice_questoes %>% 
     mutate(id_Char = paste0(id_Char, "_alunos"),
-           Enunciado = paste0(row_number(), " - ", Enunciado))
+           Enunciado = paste0(id_Questao, " - ", Enunciado))
   
   i <- 1
   max <- length(opcoes)

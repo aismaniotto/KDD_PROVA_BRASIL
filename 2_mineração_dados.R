@@ -78,7 +78,7 @@ rules_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
                            rules = TRUE)
 summary(rules_mod_melhores)
 write(rules_mod_melhores$rules, file = paste0(dir_dados_minerados,
-                                       "/C50_regras_melhores"))
+                                       "/C50_regras_melhores.csv"))
 
 ## Piores cidades --------------------------------------------------------------
 # Árvore de decisão
@@ -110,7 +110,7 @@ rules_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
                          rules = TRUE)
 summary(rules_mod_piores)
 write(rules_mod_piores$rules, file = paste0(dir_dados_minerados,
-                                            "/C50_regras_piores"))
+                                            "/C50_regras_piores.csv"))
 
 # Apriori (Associação) =========================================================
 #### Melhores cidades ----------------------------------------------------------
@@ -131,7 +131,7 @@ df_rules_melhores2 <-
 
 write.table(x =  df_rules_melhores, 
             file = paste0(dir_dados_minerados, 
-                          "/apriori_regras_melhores_cidades"), 
+                          "/apriori_regras_melhores_cidades.csv"), 
             row.names = FALSE,
             sep = ";")
 
@@ -153,7 +153,7 @@ df_rules_piores2 <-
 
 write.table(x = df_rules_piores, 
             file = paste0(dir_dados_minerados, 
-                          "/apriori_regras_piores_cidades"),
+                          "/apriori_regras_piores_cidades.csv"),
             row.names = FALSE,
             sep = ";")
 
