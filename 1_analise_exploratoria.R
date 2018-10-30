@@ -9,8 +9,6 @@ library(ggplot2)
 # mineração de dados
 library(party)
 library(arules)
-library(C50)
-library(DMwR)
 
 #### Diretorios #####
 dir_root <- getwd() 

@@ -228,7 +228,7 @@ df_alunos_2015_select2 <- df_alunos_2015_select1 %>%
 ## Preenchimento das respostas não preenchidas (NA) por "NA"
 df_alunos_2015_clean <- df_alunos_2015_select2 %>% 
   mutate_at(vars(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos),
-            funs(if_else(is.na(.),"Nao Informado",.)))
+            funs(if_else(is.na(.),"NI",.)))
 
 #### Filtro dos dados para os estados e cidades determinados #####
 # Gráfico de proficiência dos estados
@@ -317,12 +317,12 @@ df_alunos_2015_melhores_cidades <-
   df_alunos_2015_melhores_cidades %>% 
   mutate(nivel_proficiencia = 
            case_when(
-             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
+             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "IN",
              PROFICIENCIA_MT_SAEB_alunos >= 225 &
-               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Basico",
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "BA",
              PROFICIENCIA_MT_SAEB_alunos >= 300 &
-               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
-             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avancado"
+               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "PR",
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "AV"
            ),
          ind_aprendizado_adequado = 
            case_when(
@@ -337,12 +337,12 @@ df_alunos_2015_piores_cidades <-
   df_alunos_2015_piores_cidades %>% 
   mutate(nivel_proficiencia = 
            case_when(
-             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "Insuficiente",
+             PROFICIENCIA_MT_SAEB_alunos < 225 ~ "IN",
              PROFICIENCIA_MT_SAEB_alunos >= 225 &
-               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "Basico",
+               PROFICIENCIA_MT_SAEB_alunos < 300 ~ "BA",
              PROFICIENCIA_MT_SAEB_alunos >= 300 &
-               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "Proficiente",
-             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "Avancado"
+               PROFICIENCIA_MT_SAEB_alunos < 350 ~ "PR",
+             PROFICIENCIA_MT_SAEB_alunos >= 350  ~ "AV"
            ),
          ind_aprendizado_adequado = 
            case_when(

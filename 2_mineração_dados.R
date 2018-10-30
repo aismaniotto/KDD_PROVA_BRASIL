@@ -4,10 +4,7 @@ library(dplyr)
 library(tidyr)
 # importação de dados
 library(readr)
-# graficos
-library(ggplot2)
 # mineração de dados
-library(party)
 library(arules)
 library(C50)
 library(e1071)

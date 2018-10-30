@@ -90,8 +90,8 @@ while(i <= max){
   a3 <- a2 %>% 
     mutate(Proficiencia = 
              factor(x = Proficiencia, 
-                    levels = c("Insuficiente", "Basico", "Proficiente", "Avancado"),
-                    labels = c("Insuficiente", "Basico", "Proficiente", "Avancado"))) %>% 
+                    levels = c("IN", "BA", "PR", "AV"),
+                    labels = c("IN", "BA", "PR", "AV"))) %>% 
     arrange(Proficiencia)
   # Muda a posição horientação do dataframe, de uma forma que fique bom analisar
   a4 <- a3 %>% 
@@ -102,7 +102,7 @@ while(i <= max){
   # Reune as opções utilizadas nessa questão
   opcoes_old <- a4 %>% 
     distinct(Opcao) %>% 
-    filter(Opcao != "Nao Informado") %>%
+    filter(Opcao != "NI") %>%
     unlist() %>% 
     as.vector()
 
@@ -150,8 +150,8 @@ while(i <= max){
   a3 <- a2 %>% 
     mutate(Proficiencia = 
              factor(x = Proficiencia, 
-                    levels = c("Insuficiente", "Basico", "Proficiente", "Avancado"),
-                    labels = c("Insuficiente", "Basico", "Proficiente", "Avancado"))) %>% 
+                    levels = c("IN", "BA", "PR", "AV"),
+                    labels = c("IN", "BA", "PR", "AV"))) %>% 
     arrange(Proficiencia)
   # Muda a posição horientação do dataframe, de uma forma que fique bom analisar
   a4 <- a3 %>% 
@@ -162,7 +162,7 @@ while(i <= max){
   # Reune as opções utilizadas nessa questão
   opcoes_old <- a4 %>% 
     distinct(Opcao) %>% 
-    filter(Opcao != "Nao Informado") %>%
+    filter(Opcao != "NI") %>%
     unlist() %>% 
     as.vector()
   
