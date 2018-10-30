@@ -2,7 +2,6 @@
 # manipulação dos dados
 library(dplyr)
 library(tidyr)
-library(plyr)
 # manipulação de texto
 library(stringr)
 # importação de dados
@@ -24,19 +23,19 @@ dir.create(dir_dados_visu_natural, recursive = TRUE)
 ##### Carregar data frames #####
 apriori_melhores_cidades <- 
   read.csv2(file = paste0(dir_dados_minerados, 
-                          "/apriori_regras_melhores_cidades"))
+                          "/apriori_regras_melhores_cidades.csv"))
 
 apriori_piores_cidades <- 
   read.csv2(file = paste0(dir_dados_minerados, 
-                          "/apriori_regras_piores_cidades"))
+                          "/apriori_regras_piores_cidades.csv"))
 
 c50_melhores_cidades <- 
   read.csv2(file = paste0(dir_dados_minerados, 
-                          "/C50_regras_melhores"))
+                          "/C50_regras_melhores.csv"))
 
 c50_piores_piores <- 
   read.csv2(file = paste0(dir_dados_minerados, 
-                          "/C50_regras_piores"))
+                          "/C50_regras_piores.csv"))
 
 df_indice_questoes <- 
   read.csv2(file = paste0(dir_dados_pre_processados, 
@@ -91,7 +90,7 @@ while(i <= max){
     mutate(Proficiencia = 
              factor(x = Proficiencia, 
                     levels = c("IN", "BA", "PR", "AV"),
-                    labels = c("IN", "BA", "PR", "AV"))) %>% 
+                    labels = c("Insuficiente", "Basico", "Proficiente", "Avançado"))) %>% 
     arrange(Proficiencia)
   # Muda a posição horientação do dataframe, de uma forma que fique bom analisar
   a4 <- a3 %>% 
@@ -113,7 +112,7 @@ while(i <= max){
   
   # Na coluna de opções, troca a letra pela opção completa
   a5 <- a4
-  a5$Opcao <- mapvalues(a4$Opcao, opcoes_old, opcoes_new)
+  a5$Opcao <- plyr::mapvalues(a4$Opcao, opcoes_old, opcoes_new)
   
   # Atribui o enunciado da questão à primeira coluna
   a5[,1] <- troca_idchar_por_enunciado(
@@ -151,7 +150,7 @@ while(i <= max){
     mutate(Proficiencia = 
              factor(x = Proficiencia, 
                     levels = c("IN", "BA", "PR", "AV"),
-                    labels = c("IN", "BA", "PR", "AV"))) %>% 
+                    labels = c("Insuficiente", "Basico", "Proficiente", "Avançado"))) %>% 
     arrange(Proficiencia)
   # Muda a posição horientação do dataframe, de uma forma que fique bom analisar
   a4 <- a3 %>% 
@@ -173,7 +172,7 @@ while(i <= max){
   
   # Na coluna de opções, troca a letra pela opção completa
   a5 <- a4
-  a5$Opcao <- mapvalues(a4$Opcao, opcoes_old, opcoes_new)
+  a5$Opcao <- plyr::mapvalues(a4$Opcao, opcoes_old, opcoes_new)
   
   # Atribui o enunciado da questão à primeira coluna
   a5[,1] <- troca_idchar_por_enunciado(

@@ -113,7 +113,7 @@ write(rules_mod_piores$rules, file = paste0(dir_dados_minerados,
 #### Melhores cidades ----------------------------------------------------------
 df_melhores_questionario_nivel_prof <- 
   df_alunos_2015_melhores_cidades %>% 
-  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
+  select(nivel_proficiencia, TX_RESP_Q013_alunos:TX_RESP_Q057_alunos)
 
 rules_melhores <- apriori(df_melhores_questionario_nivel_prof, 
                           parameter = list(minlen=2,
@@ -135,7 +135,7 @@ write.table(x =  df_rules_melhores,
 #### Piores cidades ------------------------------------------------------------
 df_piores_questionario_nivel_prof <- 
   df_alunos_2015_piores_cidades %>% 
-  select(TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) 
+  select(nivel_proficiencia, TX_RESP_Q013_alunos:TX_RESP_Q057_alunos) 
 
 rules_piores <- apriori(df_piores_questionario_nivel_prof,
                         parameter = list(minlen=2,

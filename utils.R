@@ -8,8 +8,8 @@ apresentar_regras_apriori <- function(df_regras_apriori) {
   df_regras_apriori2 <- 
     df_regras_apriori %>% 
     mutate(rules = gsub("\\{|\\}", "",rules)) %>% 
-    separate(rules, c("rules_a", "gera", "rules_b"), " ")
-  # %>% 
+    separate(rules, c("rules_a", "gera", "rules_b"), " ") 
+  # %>%
   #   mutate(id = rownames())
   df_regras_apriori2$id <- seq.int(nrow(df_regras_apriori2))
   
