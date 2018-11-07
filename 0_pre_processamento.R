@@ -237,7 +237,7 @@ proficiencia_plot_estado <- df_proeficiencia_estados_qedu_clean %>%
              PERCENTUAL_APRENDIZADO_ADEQUADO,
               fill = PERCENTUAL_APRENDIZADO_ADEQUADO)) + 
   geom_bar(stat = "identity") + 
-  coord_flip()
+  coord_flip(ylim = c(0,100))
 ## Salvando o gráfico
 jpeg(paste0(dir_plot_pre_proc, "/proficiencia_plot_estado.jpeg"), 
      quality = 100,

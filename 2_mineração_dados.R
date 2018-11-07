@@ -60,6 +60,10 @@ tree_mod_melhores <- C5.0(x = df_alunos_2015_melhores_cidades[,vars],
                          control = c5_0_config)
 
 summary(tree_mod_melhores)
+
+write(tree_mod_melhores$output, file = paste0(dir_dados_minerados,
+                                            "/C50_arvore_descricao_melhores"))
+
 jpeg(paste0(dir_plot_mineracao_dados, "/melhores_cidades_c50.jpeg"),
      quality = 100,
      width = 6000,
@@ -93,6 +97,10 @@ tree_mod_piores <- C5.0(x = df_alunos_2015_piores_cidades[,vars],
                         control = c5_0_config)
 
 summary(tree_mod_piores)
+
+write(tree_mod_piores$output, file = paste0(dir_dados_minerados,
+                                            "/C50_arvore_descricao_piores"))
+
 jpeg(paste0(dir_plot_mineracao_dados, "/piores_cidades_c50.jpeg"), 
      quality = 100,
      width = 6000, 

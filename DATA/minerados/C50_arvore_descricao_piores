@@ -1,0 +1,80 @@
+
+C5.0 [Release 2.07 GPL Edition]  	Wed Nov  7 20:09:04 2018
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 1365 cases (17 attributes) from undefined.data
+
+Decision tree:
+
+TX_RESP_Q013_alunos in {A,D,E}: IN (1074/325)
+TX_RESP_Q013_alunos = NI:
+:...TX_RESP_Q045_alunos in {A,NI}: IN (14/1)
+:   TX_RESP_Q045_alunos = B: BA (16/5)
+TX_RESP_Q013_alunos = C:
+:...TX_RESP_Q028_alunos = B: BA (1)
+:   TX_RESP_Q028_alunos = NI: IN (4)
+:   TX_RESP_Q028_alunos = A:
+:   :...TX_RESP_Q015_alunos in {A,B,C,D,NI}: BA (15/4)
+:       TX_RESP_Q015_alunos = E: IN (11/2)
+TX_RESP_Q013_alunos = B:
+:...TX_RESP_Q028_alunos = B:
+    :...TX_RESP_Q055_alunos in {A,C,D,NI}: BA (11/1)
+    :   TX_RESP_Q055_alunos = B: IN (2)
+    TX_RESP_Q028_alunos in {A,NI}:
+    :...TX_RESP_Q055_alunos in {B,C}: IN (28/7)
+        TX_RESP_Q055_alunos in {D,NI}: BA (9/3)
+        TX_RESP_Q055_alunos = A:
+        :...TX_RESP_Q053_alunos in {B,NI}: IN (51/13)
+            TX_RESP_Q053_alunos = A:
+            :...TX_RESP_Q054_alunos in {B,C,D,NI}: IN (34/10)
+                TX_RESP_Q054_alunos = A:
+                :...TX_RESP_Q019_alunos in {A,D,F,NI}: BA (41/13)
+                    TX_RESP_Q019_alunos = E: IN (15/4)
+                    TX_RESP_Q019_alunos = B:
+                    :...TX_RESP_Q048_alunos = A: IN (2)
+                    :   TX_RESP_Q048_alunos in {B,C,NI}: BA (3)
+                    TX_RESP_Q019_alunos = C:
+                    :...TX_RESP_Q023_alunos in {A,B,C,F,NI}: IN (12/1)
+                    :   TX_RESP_Q023_alunos in {D,E,G}: BA (5)
+                    TX_RESP_Q019_alunos = G:
+                    :...TX_RESP_Q045_alunos = A: BA (1)
+                        TX_RESP_Q045_alunos = NI: IN (2)
+                        TX_RESP_Q045_alunos = B:
+                        :...TX_RESP_Q048_alunos in {A,C,NI}: BA (11/4)
+                            TX_RESP_Q048_alunos = B: IN (3)
+
+
+Evaluation on training data (1365 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	    23  393(28.8%)   <<
+
+
+	   (a)   (b)   (c)    <-classified as
+	  ----  ----  ----
+	    83   356          (a): class BA
+	    30   889          (b): class IN
+	           7          (c): class PR
+
+
+	Attribute usage:
+
+	100.00%	TX_RESP_Q013_alunos
+	 19.12%	TX_RESP_Q028_alunos
+	 16.85%	TX_RESP_Q055_alunos
+	 13.19%	TX_RESP_Q053_alunos
+	  9.45%	TX_RESP_Q054_alunos
+	  6.96%	TX_RESP_Q019_alunos
+	  3.44%	TX_RESP_Q045_alunos
+	  1.90%	TX_RESP_Q015_alunos
+	  1.39%	TX_RESP_Q048_alunos
+	  1.25%	TX_RESP_Q023_alunos
+
+
+Time: 0.0 secs
+

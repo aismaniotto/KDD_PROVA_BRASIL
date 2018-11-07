@@ -1,0 +1,87 @@
+
+C5.0 [Release 2.07 GPL Edition]  	Wed Nov  7 20:09:02 2018
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 875 cases (15 attributes) from undefined.data
+
+Decision tree:
+
+TX_RESP_Q048_alunos in {B,C}: BA (140/57)
+TX_RESP_Q048_alunos in {A,NI}:
+:...TX_RESP_Q053_alunos = A: PR (508/269)
+    TX_RESP_Q053_alunos = NI: BA (14/7)
+    TX_RESP_Q053_alunos = B:
+    :...TX_RESP_Q019_alunos in {A,G}: BA (30/14)
+        TX_RESP_Q019_alunos = NI: AV (1)
+        TX_RESP_Q019_alunos = B:
+        :...TX_RESP_Q023_alunos in {B,E,G}: BA (15/5)
+        :   TX_RESP_Q023_alunos in {A,C,D,F,NI}: PR (8)
+        TX_RESP_Q019_alunos = E:
+        :...TX_RESP_Q057_alunos in {A,B,C,NI}: PR (45/22)
+        :   TX_RESP_Q057_alunos = D: BA (4/1)
+        TX_RESP_Q019_alunos = F:
+        :...TX_RESP_Q029_alunos in {A,NI}: PR (28/13)
+        :   TX_RESP_Q029_alunos = B: BA (4/2)
+        TX_RESP_Q019_alunos = C:
+        :...TX_RESP_Q055_alunos in {B,C,D}: BA (5)
+        :   TX_RESP_Q055_alunos = NI: PR (1)
+        :   TX_RESP_Q055_alunos = A:
+        :   :...TX_RESP_Q028_alunos = B: PR (1)
+        :       TX_RESP_Q028_alunos = NI: IN (1)
+        :       TX_RESP_Q028_alunos = A:
+        :       :...TX_RESP_Q044_alunos in {A,C,E,NI}: BA (22/10)
+        :           TX_RESP_Q044_alunos = D: AV (2/1)
+        :           TX_RESP_Q044_alunos = B:
+        :           :...TX_RESP_Q029_alunos = A: PR (12/3)
+        :               TX_RESP_Q029_alunos in {B,NI}: BA (4/1)
+        TX_RESP_Q019_alunos = D:
+        :...TX_RESP_Q055_alunos in {C,D,NI}: BA (0)
+            TX_RESP_Q055_alunos = B: PR (2)
+            TX_RESP_Q055_alunos = A:
+            :...TX_RESP_Q043_alunos in {A,B,E,NI}: BA (4)
+                TX_RESP_Q043_alunos = C:
+                :...TX_RESP_Q023_alunos = C: PR (2)
+                :   TX_RESP_Q023_alunos in {A,B,D,E,F,G,NI}: BA (5/1)
+                TX_RESP_Q043_alunos = D:
+                :...TX_RESP_Q045_alunos in {A,NI}: PR (3)
+                    TX_RESP_Q045_alunos = B:
+                    :...TX_RESP_Q057_alunos = A: PR (6/2)
+                        TX_RESP_Q057_alunos in {B,C,D,NI}: BA (8/2)
+
+
+Evaluation on training data (875 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	    26  410(46.9%)   <<
+
+
+	   (a)   (b)   (c)   (d)    <-classified as
+	  ----  ----  ----  ----
+	     2    13         119    (a): class AV
+	         155         170    (b): class BA
+	          18     1    20    (c): class IN
+	     1    69         307    (d): class PR
+
+
+	Attribute usage:
+
+	100.00%	TX_RESP_Q048_alunos
+	 84.00%	TX_RESP_Q053_alunos
+	 24.34%	TX_RESP_Q019_alunos
+	  8.91%	TX_RESP_Q055_alunos
+	  7.20%	TX_RESP_Q057_alunos
+	  5.49%	TX_RESP_Q029_alunos
+	  4.80%	TX_RESP_Q028_alunos
+	  4.57%	TX_RESP_Q044_alunos
+	  3.43%	TX_RESP_Q023_alunos
+	  3.20%	TX_RESP_Q043_alunos
+	  1.94%	TX_RESP_Q045_alunos
+
+
+Time: 0.0 secs
+

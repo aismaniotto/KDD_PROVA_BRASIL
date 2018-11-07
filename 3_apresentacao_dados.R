@@ -96,7 +96,8 @@ while(i <= max){
   a4 <- a3 %>% 
     gather(Opcao, Porcentagem, -Proficiencia) %>% 
     mutate(Questao = NA) %>% 
-    select(Questao, Opcao, Proficiencia, Porcentagem)
+    select(Questao, Opcao, Proficiencia, Porcentagem) %>% 
+    arrange(Questao, Proficiencia, Opcao)
   
   # Reune as opções utilizadas nessa questão
   opcoes_old <- a4 %>% 
@@ -156,7 +157,8 @@ while(i <= max){
   a4 <- a3 %>% 
     gather(Opcao, Porcentagem, -Proficiencia) %>% 
     mutate(Questao = NA) %>% 
-    select(Questao, Opcao, Proficiencia, Porcentagem)
+    select(Questao, Opcao, Proficiencia, Porcentagem) %>% 
+    arrange(Questao, Proficiencia, Opcao)
   
   # Reune as opções utilizadas nessa questão
   opcoes_old <- a4 %>% 
