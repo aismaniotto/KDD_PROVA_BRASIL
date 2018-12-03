@@ -59,15 +59,29 @@ df_alunos_2015_piores_cidades %>%
   count()
 
 # Graficos de qtd de alunos por proficiencia
-proficiencia_plot_melhores_cidades <- df_alunos_2015_melhores_cidades %>%   
-  ggplot(aes(nivel_proficiencia, fill = nivel_proficiencia)) + 
-  geom_bar() + 
-  ylab('qtd_alunos')
+proficiencia_plot_melhores_cidades <- df_alunos_2015_melhores_cidades %>%
+  mutate(nivel_proficiencia = 
+           factor(x = nivel_proficiencia, 
+                  levels = c("IN", "BA", "PR", "AV"),
+                  labels = c("Insuficiente", "Basico", "Proficiente", "Avançado"))) %>% 
+  arrange(nivel_proficiencia) %>% 
+  ggplot(aes(x = factor(1), fill = nivel_proficiencia)) +
+  geom_bar(width = 1) + 
+  coord_polar(theta = "y") + 
+  ylab("qtd_alunos") + 
+  xlab("")
 
-proficiencia_plot_piores_cidades <- df_alunos_2015_piores_cidades %>%   
-  ggplot(aes(nivel_proficiencia, fill = nivel_proficiencia)) + 
-  geom_bar() + 
-  ylab('qtd_alunos')
+proficiencia_plot_piores_cidades <- df_alunos_2015_piores_cidades %>%
+  mutate(nivel_proficiencia = 
+           factor(x = nivel_proficiencia, 
+                  levels = c("IN", "BA", "PR", "AV"),
+                  labels = c("Insuficiente", "Basico", "Proficiente", "Avançado"))) %>% 
+  arrange(nivel_proficiencia) %>% 
+  ggplot(aes(x = factor(1), fill = nivel_proficiencia)) +
+  geom_bar(width = 1) + 
+  coord_polar(theta = "y") + 
+  ylab("qtd_alunos") + 
+  xlab("")
 
 ## Salvando o gráfico
 jpeg(paste0(dir_plot_analise_exploratoria, 
